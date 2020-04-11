@@ -10,9 +10,14 @@ function init() {
   const gameBoard = document.querySelector('.game-board')
   const cellsGameBoard = []
 
-  const cellsGameBoardResult = []
+  // ---> ResultBox DOM Elements
+  const cellsResultBox = []
 
-  const cellsForResultBoard = []
+  // ---> array with last cell of every line
+  const cellsForResultBox = []
+
+
+
 
 
   //* Grid Vars
@@ -49,16 +54,33 @@ function init() {
       cellsGameBoard.push(cellGB)
       cellGB.dataset.cellNum = i + 1
     }
+    // ---> gets last div of every line
+
     cellsGameBoard.filter((cellGB) => {
       if (cellGB.dataset.cellNum % 5 === 0) {
-        cellsForResultBoard.push(cellGB)
+        cellsForResultBox.push(cellGB)
+        cellGB.classList.add('results')
+        cellGB.textContent = ''
       }
-      
     })
-    console.log(cellsGameBoard)
-    console.log(cellsForResultBoard)
+    createResultBox()
   }
-    
+
+  // --> creates a grid inside last div of every line
+  function createResultBox() {
+
+    cellsForResultBox.forEach((cell) => {
+      for (let i = 0; i < cellCountGameBoardResult; i++) {
+        const cellR = document.createElement('div')
+        cellR.textContent = 'R' + i
+        cell.appendChild(cellR)
+        cellsResultBox.push(cellR)
+      }
+    })
+  }
+
+  console.log(cellsForResultBox)
+  console.log(cellsResultBox)
 
 
 
