@@ -13,6 +13,7 @@ function init() {
   // ---> GameBoard DOM Elements
   const gameBoard = document.querySelector('.game-board')
   const cellsGameBoard = []
+  const rowsGameBoard = []
 
   // ---> ResultBox DOM Elements
   const cellsResultBox = []
@@ -35,7 +36,7 @@ function init() {
 
   // ---> GameBoard Grid
   const widthGameBoard = 5
-  const cellCountGameBoard = widthGameBoard * 10
+  const cellCountGameBoard = widthGameBoard
   const widthGameBoardResult = 2
   const cellCountGameBoardResult = widthGameBoardResult * 2
 
@@ -69,17 +70,24 @@ function init() {
       cellsCode.push(cellC)
     }
     // ---> creates gameBoard grid
-    for (let i = 0; i < cellCountGameBoard; i++) {
-      const cellGB = document.createElement('div')
-      cellGB.textContent = 'G' + i
-      gameBoard.appendChild(cellGB)
-      cellsGameBoard.push(cellGB)
-      cellGB.dataset.cellNum = i + 1
-      cellGB.classList.add('game-board-empty')
+    for (let i = 0; i < 10; i++) {
+      const row = document.createElement('div')
+      gameBoard.appendChild(row)
+      rowsGameBoard.push(row)
+      row.classList.add('row')
+      row.id = 'row' + i
+      for (let i = 0; i < cellCountGameBoard; i++) {
+        const cellGB = document.createElement('div')
+        cellGB.textContent = 'G' + i
+        row.appendChild(cellGB)
+        cellsGameBoard.push(cellGB)
+        cellGB.dataset.cellNum = i + 1
+        cellGB.classList.add('game-board-empty')
+      }
     }
     // ---> gets last div of every line
     cellsGameBoard.filter((cellGB) => {
-      if (cellGB.dataset.cellNum % 5 === 0) {
+      if (cellGB.dataset.cellNum === '5') {
         cellsForResultBox.push(cellGB)
         cellGB.classList.remove('game-board-empty')
         cellGB.classList.add('results')
@@ -97,8 +105,6 @@ function init() {
     })
     handleRandomCode()
   }
-
-
 
   // ---> generates a random code 
   function handleRandomCode() {
@@ -199,10 +205,7 @@ function init() {
         codeAnswer.push('code-wrong')
       }
     }
-    console.log(submittedCode)
-    console.log(randomCode)
-    console.log(codeAnswer)
-    
+
   }
 
   // --->  Creates userCode and gameBoard grids
