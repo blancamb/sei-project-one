@@ -6,6 +6,10 @@ function init() {
   const userCode = document.querySelector('.user-code')
   const cellsUserCode = []
 
+  // ---> UserCode DOM Elements
+  const theCode = document.querySelector('.the-code')
+  const cellsCode = []
+
   // ---> GameBoard DOM Elements
   const gameBoard = document.querySelector('.game-board')
   const cellsGameBoard = []
@@ -21,15 +25,15 @@ function init() {
   console.log(submitCodeBtn)
 
 
-  const playerAttemptArray = []
-
-
-
 
   //* Grid Vars
   // ---> UserCode Grid
   const widthUserCode = 4
   const cellCountUserCode = widthUserCode
+
+  // ---> UserCode Grid
+  const widthCode = 4
+  const cellCountCode = widthCode
 
   // ---> GameBoard Grid
   const widthGameBoard = 5
@@ -51,6 +55,13 @@ function init() {
       cellUC.textContent = 'U' + i
       userCode.appendChild(cellUC)
       cellsUserCode.push(cellUC)
+    }
+    // ---> create the Code
+    for (let i = 0; i < cellCountCode; i++) {
+      const cellC = document.createElement('div')
+      cellC.textContent = 'C' + i
+      theCode.appendChild(cellC)
+      cellsCode.push(cellC)
     }
     // ---> creates gameBoard grid
     for (let i = 0; i < cellCountGameBoard; i++) {
@@ -80,9 +91,33 @@ function init() {
       }
     })
     cellsUserCode[0].classList.add('code-part-selected')
+    handleRandomCode()
   }
 
+  // ---> generates a random code 
+  const arrayOfCodeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d']
+  // const codeOne = arrayOfCodeParts[randomIndex]
+  // const randomIndex = Math.floor(Math.random() * cellsCode.length)
 
+
+  function handleRandomCode() {
+    let currentIndex = arrayOfCodeParts.length
+    let temporaryValue
+    let randomIndex
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex -= 1
+      temporaryValue = arrayOfCodeParts[currentIndex]
+      arrayOfCodeParts[currentIndex] = arrayOfCodeParts[randomIndex]
+      arrayOfCodeParts[randomIndex] = temporaryValue
+    }
+    cellsCode[0].classList.add(arrayOfCodeParts[0])
+    cellsCode[1].classList.add(arrayOfCodeParts[1])
+    cellsCode[2].classList.add(arrayOfCodeParts[2])
+    cellsCode[3].classList.add(arrayOfCodeParts[3])
+    console.log(arrayOfCodeParts)
+  }
+   
   // ---> playerCode changer 
   function handleKeyUp(event) {
     if (cellsUserCode[0].classList.contains('code-part-selected')) {
@@ -114,7 +149,7 @@ function init() {
           cellsUserCode[0].classList.remove('code-part-d')
           cellsUserCode[0].classList.add('code-part-a')
         }
-      
+
       } else {
         console.log('not this')
       }
@@ -154,14 +189,15 @@ function init() {
       cellsGameBoard[43].classList.add(cellsUserCode[3].className)
     }
   }
-  console.log(playerAttemptArray)
+
+
 
   // --->  Creates userCode and gameBoard grids
 
   createUserCodeGrid()
   paintUserCodeGrid()
 
-  
+
 
 
   //? EVENTS
