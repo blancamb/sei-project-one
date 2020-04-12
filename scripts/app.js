@@ -4,22 +4,12 @@ function init() {
   //* DOM Elements
   // ---> UserCode DOM Elements
   const userCode = document.querySelector('.user-code')
-  const cellsUserCode = []
 
   // ---> UserCode DOM Elements
   const theCode = document.querySelector('.the-code')
-  const cellsCode = []
 
   // ---> GameBoard DOM Elements
   const gameBoard = document.querySelector('.game-board')
-  const cellsGameBoard = []
-  const rowsGameBoard = []
-
-  // ---> ResultBox DOM Elements
-  const cellsResultBox = []
-
-  // ---> array with last cell of every line
-  const cellsForResultBox = []
 
   // ---> Submit code
   const submitCodeBtn = document.querySelector('.submit-code')
@@ -27,14 +17,20 @@ function init() {
 
   //* Grid Vars
   // ---> UserCode Grid
+  const cellsCode = []
   const widthUserCode = 4
   const cellCountUserCode = widthUserCode
 
   // ---> UserCode Grid
+  const cellsUserCode = []
   const widthCode = 4
   const cellCountCode = widthCode
 
   // ---> GameBoard Grid
+  const rowsGameBoard = []
+  const cellsGameBoard = []
+  const cellsResultBox = []
+  const cellsForResultBox = []  // ---> array with last cell of every line
   const widthGameBoard = 5
   const cellCountGameBoard = widthGameBoard
   const widthGameBoardResult = 2
@@ -47,20 +43,20 @@ function init() {
   const arrayOfCodeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d']
   const randomCode = arrayOfCodeParts // ---> array of classes of Random code
 
-
-
+  let playerCodePosition = 0
 
 
   //? EXECUTION 
 
   // ---> creates ALL GRIDS
-  function createUserCodeGrid() {
+  function createUserCodeGrid(startingPosition) {
     // --->  creates userCode grid
     for (let i = 0; i < cellCountUserCode; i++) {
       const cellUC = document.createElement('div')
       cellUC.textContent = 'U' + i
       userCode.appendChild(cellUC)
       cellsUserCode.push(cellUC)
+      cellsUserCode[startingPosition].classList.add('code-part-selected')
     }
     // ---> create the Code
     for (let i = 0; i < cellCountCode; i++) {
@@ -69,13 +65,13 @@ function init() {
       theCode.appendChild(cellC)
       cellsCode.push(cellC)
     }
-    // ---> creates gameBoard grid
+    // ---> creates gameBoard grid: 10 rows
     for (let i = 0; i < 10; i++) {
       const row = document.createElement('div')
       gameBoard.appendChild(row)
       rowsGameBoard.push(row)
       row.classList.add('row')
-      row.id = 'row' + i
+      row.id = 'row' + (10 - i)
       for (let i = 0; i < cellCountGameBoard; i++) {
         const cellGB = document.createElement('div')
         cellGB.textContent = 'G' + i
@@ -103,63 +99,69 @@ function init() {
         cellsResultBox.push(cellR)
       }
     })
-    handleRandomCode()
+    handleRandomCode(arrayOfCodeParts)
   }
 
   // ---> generates a random code 
-  function handleRandomCode() {
-    let currentIndex = arrayOfCodeParts.length
+  function handleRandomCode(array) {
+    let currentIndex = array.length
     let temporaryValue
     let randomIndex
     while (0 !== currentIndex) {
       randomIndex = Math.floor(Math.random() * currentIndex)
       currentIndex -= 1
-      temporaryValue = arrayOfCodeParts[currentIndex]
-      arrayOfCodeParts[currentIndex] = arrayOfCodeParts[randomIndex]
-      arrayOfCodeParts[randomIndex] = temporaryValue
+      temporaryValue = array[currentIndex]
+      array[currentIndex] = array[randomIndex]
+      array[randomIndex] = temporaryValue
     }
-    cellsCode[0].classList.add(arrayOfCodeParts[0])
-    cellsCode[1].classList.add(arrayOfCodeParts[1])
-    cellsCode[2].classList.add(arrayOfCodeParts[2])
-    cellsCode[3].classList.add(arrayOfCodeParts[3])
+    for (let i = 0; i < cellsCode.length; i++) {
+      cellsCode[i].classList.add(array[i])
+    }
   }
 
   // ---> playerCode changer 
   function handleKeyUp(event) {
-    if (cellsUserCode[0].classList.contains('code-part-selected')) {
-      if (event.keyCode === 38) {
-        if (cellsUserCode[0].classList.contains('code-part-a')) {
-          cellsUserCode[0].classList.remove('code-part-a')
-          cellsUserCode[0].classList.add('code-part-d')
-        } else if (cellsUserCode[0].classList.contains('code-part-d')) {
-          cellsUserCode[0].classList.remove('code-part-d')
-          cellsUserCode[0].classList.add('code-part-c')
-        } else if (cellsUserCode[0].classList.contains('code-part-c')) {
-          cellsUserCode[0].classList.remove('code-part-c')
-          cellsUserCode[0].classList.add('code-part-b')
-        } else if (cellsUserCode[0].classList.contains('code-part-b')) {
-          cellsUserCode[0].classList.remove('code-part-b')
-          cellsUserCode[0].classList.add('code-part-a')
-        }
-      } else if (event.keyCode === 40) {
-        if (cellsUserCode[0].classList.contains('code-part-a')) {
-          cellsUserCode[0].classList.remove('code-part-a')
-          cellsUserCode[0].classList.add('code-part-b')
-        } else if (cellsUserCode[0].classList.contains('code-part-b')) {
-          cellsUserCode[0].classList.remove('code-part-b')
-          cellsUserCode[0].classList.add('code-part-c')
-        } else if (cellsUserCode[0].classList.contains('code-part-c')) {
-          cellsUserCode[0].classList.remove('code-part-c')
-          cellsUserCode[0].classList.add('code-part-d')
-        } else if (cellsUserCode[0].classList.contains('code-part-d')) {
-          cellsUserCode[0].classList.remove('code-part-d')
-          cellsUserCode[0].classList.add('code-part-a')
-        }
-
-      } else {
-        console.log('not this')
+    const x = playerCodePosition % widthUserCode
+    if (event.keyCode === 38) {
+      if (cellsUserCode[playerCodePosition].classList.contains('code-part-a')) {
+        cellsUserCode[playerCodePosition].classList.remove('code-part-a')
+        cellsUserCode[playerCodePosition].classList.add('code-part-d')
+      } else if (cellsUserCode[playerCodePosition].classList.contains('code-part-d')) {
+        cellsUserCode[playerCodePosition].classList.remove('code-part-d')
+        cellsUserCode[playerCodePosition].classList.add('code-part-c')
+      } else if (cellsUserCode[playerCodePosition].classList.contains('code-part-c')) {
+        cellsUserCode[playerCodePosition].classList.remove('code-part-c')
+        cellsUserCode[playerCodePosition].classList.add('code-part-b')
+      } else if (cellsUserCode[playerCodePosition].classList.contains('code-part-b')) {
+        cellsUserCode[playerCodePosition].classList.remove('code-part-b')
+        cellsUserCode[playerCodePosition].classList.add('code-part-a')
       }
-
+    } else if (event.keyCode === 40) {
+      if (cellsUserCode[playerCodePosition].classList.contains('code-part-a')) {
+        cellsUserCode[playerCodePosition].classList.remove('code-part-a')
+        cellsUserCode[playerCodePosition].classList.add('code-part-b')
+      } else if (cellsUserCode[playerCodePosition].classList.contains('code-part-b')) {
+        cellsUserCode[playerCodePosition].classList.remove('code-part-b')
+        cellsUserCode[playerCodePosition].classList.add('code-part-c')
+      } else if (cellsUserCode[playerCodePosition].classList.contains('code-part-c')) {
+        cellsUserCode[playerCodePosition].classList.remove('code-part-c')
+        cellsUserCode[playerCodePosition].classList.add('code-part-d')
+      } else if (cellsUserCode[playerCodePosition].classList.contains('code-part-d')) {
+        cellsUserCode[playerCodePosition].classList.remove('code-part-d')
+        cellsUserCode[playerCodePosition].classList.add('code-part-a')
+      }
+    } else if (event.keyCode === 39) {
+      if (x < widthUserCode - 1) {
+        cellsUserCode[playerCodePosition].classList.remove('code-part-selected')
+        playerCodePosition++
+        cellsUserCode[playerCodePosition].classList.add('code-part-selected')
+      }
+    } else if (event.keyCode === 37) {
+      if (x > 0) {
+        cellsUserCode[playerCodePosition].classList.remove('code-part-selected')
+        playerCodePosition--
+        cellsUserCode[playerCodePosition].classList.add('code-part-selected')
+      }
     }
   }
 
@@ -210,7 +212,7 @@ function init() {
 
   // --->  Creates userCode and gameBoard grids
 
-  createUserCodeGrid()
+  createUserCodeGrid(playerCodePosition)
   paintUserCodeGrid()
 
 
