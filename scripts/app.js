@@ -38,6 +38,17 @@ function init() {
   const widthGameBoardResult = 2
   const cellCountGameBoardResult = widthGameBoardResult * 2
   //---> gameBoard rows
+  const row1 = []
+  const row2 = []
+  const row3 = []
+  const row4 = []
+  const row5 = []
+  const row6 = []
+  const row7 = []
+  const row8 = []
+  const row9 = []
+  const row10 = []
+  const rows = [row1, row2, row3, row4, row5, row6, row7, row8, row9, row10]
 
   //* Code Vars
   // ---> array for Random code
@@ -74,19 +85,22 @@ function init() {
       rowsGameBoard.push(row)
       row.classList.add('row')
       row.id = (`row${10 - b}`)
+      // ---> creates cells in every row
       for (let c = 0; c < cellCountGameBoard; c++) {
         const cellGB = document.createElement('div')
-        cellGB.textContent = 'G' + c
-        cellGB.id = (`result${10 - b}`)
+        cellGB.textContent = b + ' - G' + c
         row.appendChild(cellGB)
-        cellsGameBoard.push(cellGB)
+        rows[b].push(cellGB)
         cellGB.dataset.cellNum = c + 1
         cellGB.classList.add('game-board-empty')
+        // ---> selects the last cell of every row
         if (cellGB.dataset.cellNum === '5') {
           resultCells.push(cellGB)
+          cellGB.id = (`result${10 - b}`)
           cellGB.classList.remove('game-board-empty')
           cellGB.classList.add('results')
           cellGB.textContent = ''
+          // ---> creates Result cells
           for (let d = 0; d < cellCountGameBoardResult; d++) {
             const cellR = document.createElement('div')
             cellR.textContent = d
@@ -172,16 +186,22 @@ function init() {
 
   console.log(resultCells)
   console.log(cellsResultBox)
+  console.log(rows)
+
 
 
   let numberOfSubmits = 0
+
   function handleSubmitCode() {
+    nextRow = rows[numberOfSubmits]
+    console.log(nextRow)
     const submittedCode = [] // ---> array of classes of Submitted code
     cellsUserCode.forEach(cell => {
       cell.classList.remove('code-part-selected')
       submittedCode.push(cell.className)
       cellsUserCode[0].classList.add('code-part-selected')
     })
+    // ---> checks for the code to have all different parts and no repeats
     if (submittedCode.includes(codeParts[0])
       && submittedCode.includes(codeParts[1])
       && submittedCode.includes(codeParts[2])
@@ -190,8 +210,18 @@ function init() {
     } else {
       messagesBoard.textContent = 'You can\'t repeat colors!'
     }
-    console.log(submittedCode)
-    console.log(codeParts)
+
+    // ---> transfers PlayerCode to GameGrid
+
+    
+    nextRow[0].classList.remove('game-board-empty')
+    nextRow[0].classList.add(submittedCode[0])
+    nextRow[1].classList.remove('game-board-empty')
+    nextRow[1].classList.add(submittedCode[1])
+    nextRow[2].classList.remove('game-board-empty')
+    nextRow[2].classList.add(submittedCode[2])
+    nextRow[3].classList.remove('game-board-empty')
+    nextRow[3].classList.add(submittedCode[3])
 
 
 
