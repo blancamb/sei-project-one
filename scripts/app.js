@@ -14,6 +14,9 @@ function init() {
   // ---> Submit code
   const submitCodeBtn = document.querySelector('.submit-code')
 
+  // ---> Messge-Board
+  const messagesBoard = document.querySelector('.message-board')
+
   //* Grid Vars
   // ---> UserCode Grid
   const cellsCode = []
@@ -39,6 +42,7 @@ function init() {
   //* Code Vars
   // ---> array for Random code
   const arrayOfCodeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d']
+  const codeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d']
   const randomCode = arrayOfCodeParts // ---> array of classes of Random code
   const codeAnswer = []
   let playerCodePosition = 0
@@ -73,12 +77,11 @@ function init() {
       for (let c = 0; c < cellCountGameBoard; c++) {
         const cellGB = document.createElement('div')
         cellGB.textContent = 'G' + c
-        cellGB.classList.add(`row${10 - b}`)
+        cellGB.id = (`result${10 - b}`)
         row.appendChild(cellGB)
         cellsGameBoard.push(cellGB)
         cellGB.dataset.cellNum = c + 1
         cellGB.classList.add('game-board-empty')
-
         if (cellGB.dataset.cellNum === '5') {
           resultCells.push(cellGB)
           cellGB.classList.remove('game-board-empty')
@@ -93,27 +96,15 @@ function init() {
         }
       }
     }
-    console.log(resultCells)
-    console.log(cellsResultBox)
-    // // ---> gets last div of every line
-    // cellsGameBoard.filter((cellGB) => {
-    //   if (cellGB.dataset.cellNum === '5') {
-    //     cellsForResultBox.push(cellGB)
-    //     cellGB.classList.remove('game-board-empty')
-    // cellGB.classList.add('results')
-    //     cellGB.textContent = ''
-    //   }
-    // })
-    // // --> creates a grid inside last div of every line
-    // cellsForResultBox.forEach((cell) => {
-    //   for (let d = 0; d < cellCountGameBoardResult; d++) {
-    //     const cellR = document.createElement('div')
-    //     cellR.textContent = d
-    //     cell.appendChild(cellR)
-    //     cellsResultBox.push(cellR)
-    //   }
-    // })
+    paintUserCodeGrid()
     handleRandomCode(arrayOfCodeParts)
+  }
+
+  // ---> paints userCode with code 
+  function paintUserCodeGrid() {
+    for (let i = 0; i < arrayOfCodeParts.length; i++) {
+      cellsUserCode[i].classList.add(codeParts[i])
+    }
   }
 
   // ---> generates a random code 
@@ -137,32 +128,32 @@ function init() {
   function handleKeyUp(event) {
     const x = playerCodePosition % widthUserCode
     if (event.keyCode === 38) {
-      if (cellsUserCode[playerCodePosition].classList.contains('code-part-a')) {
-        cellsUserCode[playerCodePosition].classList.remove('code-part-a')
-        cellsUserCode[playerCodePosition].classList.add('code-part-d')
-      } else if (cellsUserCode[playerCodePosition].classList.contains('code-part-d')) {
-        cellsUserCode[playerCodePosition].classList.remove('code-part-d')
-        cellsUserCode[playerCodePosition].classList.add('code-part-c')
-      } else if (cellsUserCode[playerCodePosition].classList.contains('code-part-c')) {
-        cellsUserCode[playerCodePosition].classList.remove('code-part-c')
-        cellsUserCode[playerCodePosition].classList.add('code-part-b')
-      } else if (cellsUserCode[playerCodePosition].classList.contains('code-part-b')) {
-        cellsUserCode[playerCodePosition].classList.remove('code-part-b')
-        cellsUserCode[playerCodePosition].classList.add('code-part-a')
+      if (cellsUserCode[playerCodePosition].classList.contains(codeParts[0])) {
+        cellsUserCode[playerCodePosition].classList.remove(codeParts[0])
+        cellsUserCode[playerCodePosition].classList.add(codeParts[3])
+      } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[3])) {
+        cellsUserCode[playerCodePosition].classList.remove(codeParts[3])
+        cellsUserCode[playerCodePosition].classList.add(codeParts[2])
+      } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[2])) {
+        cellsUserCode[playerCodePosition].classList.remove(codeParts[2])
+        cellsUserCode[playerCodePosition].classList.add(codeParts[1])
+      } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[1])) {
+        cellsUserCode[playerCodePosition].classList.remove(codeParts[1])
+        cellsUserCode[playerCodePosition].classList.add(codeParts[0])
       }
     } else if (event.keyCode === 40) {
-      if (cellsUserCode[playerCodePosition].classList.contains('code-part-a')) {
-        cellsUserCode[playerCodePosition].classList.remove('code-part-a')
-        cellsUserCode[playerCodePosition].classList.add('code-part-b')
-      } else if (cellsUserCode[playerCodePosition].classList.contains('code-part-b')) {
-        cellsUserCode[playerCodePosition].classList.remove('code-part-b')
-        cellsUserCode[playerCodePosition].classList.add('code-part-c')
-      } else if (cellsUserCode[playerCodePosition].classList.contains('code-part-c')) {
-        cellsUserCode[playerCodePosition].classList.remove('code-part-c')
-        cellsUserCode[playerCodePosition].classList.add('code-part-d')
-      } else if (cellsUserCode[playerCodePosition].classList.contains('code-part-d')) {
-        cellsUserCode[playerCodePosition].classList.remove('code-part-d')
-        cellsUserCode[playerCodePosition].classList.add('code-part-a')
+      if (cellsUserCode[playerCodePosition].classList.contains(codeParts[0])) {
+        cellsUserCode[playerCodePosition].classList.remove(codeParts[0])
+        cellsUserCode[playerCodePosition].classList.add(codeParts[1])
+      } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[1])) {
+        cellsUserCode[playerCodePosition].classList.remove(codeParts[1])
+        cellsUserCode[playerCodePosition].classList.add(codeParts[2])
+      } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[2])) {
+        cellsUserCode[playerCodePosition].classList.remove(codeParts[2])
+        cellsUserCode[playerCodePosition].classList.add(codeParts[3])
+      } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[3])) {
+        cellsUserCode[playerCodePosition].classList.remove(codeParts[3])
+        cellsUserCode[playerCodePosition].classList.add(codeParts[0])
       }
     } else if (event.keyCode === 39) {
       if (x < widthUserCode - 1) {
@@ -179,16 +170,9 @@ function init() {
     }
   }
 
-  // ---> paints userCode with code (TESTING)
-  function paintUserCodeGrid() {
-    // for (let i = 0; i < arrayOfCodeParts.length; i++) {
-    //   cellsUserCode[i].classList.add(arrayOfCodeParts[i])
-    // }
-    cellsUserCode[0].classList.add('code-part-a')
-    cellsUserCode[1].classList.add('code-part-b')
-    cellsUserCode[2].classList.add('code-part-c')
-    cellsUserCode[3].classList.add('code-part-d')
-  }
+  console.log(resultCells)
+  console.log(cellsResultBox)
+
 
   let numberOfSubmits = 0
   function handleSubmitCode() {
@@ -196,8 +180,18 @@ function init() {
     cellsUserCode.forEach(cell => {
       cell.classList.remove('code-part-selected')
       submittedCode.push(cell.className)
+      cellsUserCode[0].classList.add('code-part-selected')
     })
-
+    if (submittedCode.includes(codeParts[0])
+      && submittedCode.includes(codeParts[1])
+      && submittedCode.includes(codeParts[2])
+      && submittedCode.includes(codeParts[3])) {
+      messagesBoard.textContent = 'Submitted!'
+    } else {
+      messagesBoard.textContent = 'You can\'t repeat colors!'
+    }
+    console.log(submittedCode)
+    console.log(codeParts)
 
 
 
@@ -228,14 +222,12 @@ function init() {
         codeAnswer.push('code-wrong')
       }
     }
-
     numberOfSubmits++
   }
 
   // --->  Creates userCode and gameBoard grids
 
   createUserCodeGrid(playerCodePosition)
-  paintUserCodeGrid()
 
 
 
