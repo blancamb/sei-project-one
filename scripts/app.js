@@ -30,24 +30,34 @@ function init() {
 
   // ---> GameBoard Grid
   const rowsGameBoard = []
-  const cellsResultBox = []
-  const resultCells = []
   const widthGameBoard = 5
   const cellCountGameBoard = widthGameBoard
   const widthGameBoardResult = 2
   const cellCountGameBoardResult = widthGameBoardResult * 2
   //---> gameBoard rows
-  const row1 = []
-  const row2 = []
-  const row3 = []
-  const row4 = []
-  const row5 = []
-  const row6 = []
-  const row7 = []
-  const row8 = []
-  const row9 = []
-  const row10 = []
-  const rows = [row1, row2, row3, row4, row5, row6, row7, row8, row9, row10]
+  const rowOne = []
+  const rowTwo = []
+  const rowThree = []
+  const rowFour = []
+  const rowFive = []
+  const rowSix = []
+  const rowSeven = []
+  const rowEight = []
+  const rowNine = []
+  const rowTen = []
+  const rows = [rowOne, rowTwo, rowThree, rowFour, rowFive, rowSix, rowSeven, rowEight, rowNine, rowTen]
+  // ---> results cells
+  const resultOne = []
+  const resultTwo = []
+  const resultThree = []
+  const resultFour = []
+  const resultFive = []
+  const resultSix = []
+  const resultSeven = []
+  const resultEight = []
+  const resultNine = []
+  const resultTen = []
+  const resultsAll = [resultOne, resultTwo, resultThree, resultFour, resultFive, resultSix, resultSeven, resultEight, resultNine, resultTen]
 
   //* Code Vars
   // ---> array for Random code
@@ -96,7 +106,6 @@ function init() {
         cellGB.classList.add('game-board-empty')
         // ---> selects the last cell of every row
         if (cellGB.dataset.cellNum === '5') {
-          resultCells.push(cellGB)
           cellGB.id = (`result${10 - b}`)
           cellGB.classList.remove('game-board-empty')
           cellGB.classList.add('results')
@@ -106,7 +115,8 @@ function init() {
             const cellR = document.createElement('div')
             cellR.textContent = d
             cellGB.appendChild(cellR)
-            cellsResultBox.push(cellR)
+            resultsAll[b].push(cellR)
+
           }
         }
       }
@@ -194,7 +204,6 @@ function init() {
   function handleSubmitCode() {
     cellsUserCode[playerCodePosition].classList.remove('code-part-selected')
     codeAnswer = []
-
     const nextRow = rows[numberOfSubmits]
     const submittedCode = [] // ---> array of classes of Submitted code
     cellsUserCode.forEach(cell => {
@@ -222,8 +231,6 @@ function init() {
       return
     }
 
-    console.log(numberOfSubmits)
-
     // --->  compares Player's and Random code and gives an array codeAnswer
     for (let i = 0; i < submittedCode.length; i++) {
       if (submittedCode[i] === randomCode[i]) {
@@ -234,12 +241,26 @@ function init() {
     }
 
     // ---> converts the answer array to random
-    handleRandomCode(randomAnswer)
+    handleRandomCode(codeAnswer)
+    console.log(codeAnswer)
+      
+    // ---> transfers randomAnswer to Results grid
+    const nextResult = resultsAll[numberOfSubmits]
+    
+    nextResult[0].classList = ''
+    nextResult[0].classList.add(codeAnswer[0])
+    nextResult[1].classList.remove(codeAnswer[1])
+    nextResult[1].classList.add(codeAnswer[1])
+    nextResult[2].classList.remove(codeAnswer[2])
+    nextResult[2].classList.add(codeAnswer[2])
+    nextResult[3].classList.remove(codeAnswer[3])
+    nextResult[3].classList.add(codeAnswer[3])
 
-
+    console.log(nextResult[0])
     numberOfSubmits++
     playerCodePosition = 0
   }
+  console.log(resultTwo)
 
   // --->  Creates userCode and gameBoard grids
 
