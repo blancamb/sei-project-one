@@ -30,7 +30,6 @@ function init() {
 
   // ---> GameBoard Grid
   const rowsGameBoard = []
-  const cellsGameBoard = []
   const cellsResultBox = []
   const resultCells = []
   const widthGameBoard = 5
@@ -55,8 +54,10 @@ function init() {
   const arrayOfCodeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d']
   const codeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d']
   const randomCode = arrayOfCodeParts // ---> array of classes of Random code
-  const codeAnswer = []
+  let codeAnswer = []
+  const randomAnswer = codeAnswer
   let playerCodePosition = 0
+  let numberOfSubmits = 0
 
 
   //? EXECUTION 
@@ -112,6 +113,7 @@ function init() {
     }
     paintUserCodeGrid()
     handleRandomCode(arrayOfCodeParts)
+    paintRandomCode()
   }
 
   // ---> paints userCode with code 
@@ -133,8 +135,11 @@ function init() {
       array[currentIndex] = array[randomIndex]
       array[randomIndex] = temporaryValue
     }
+  }
+
+  function paintRandomCode() {
     for (let i = 0; i < cellsCode.length; i++) {
-      cellsCode[i].classList.add(array[i])
+      cellsCode[i].classList.add(randomCode[i])
     }
   }
 
@@ -184,17 +189,13 @@ function init() {
     }
   }
 
-  console.log(resultCells)
-  console.log(cellsResultBox)
-  console.log(rows)
 
-
-
-  let numberOfSubmits = 0
 
   function handleSubmitCode() {
-    nextRow = rows[numberOfSubmits]
-    console.log(nextRow)
+    cellsUserCode[playerCodePosition].classList.remove('code-part-selected')
+    codeAnswer = []
+
+    const nextRow = rows[numberOfSubmits]
     const submittedCode = [] // ---> array of classes of Submitted code
     cellsUserCode.forEach(cell => {
       cell.classList.remove('code-part-selected')
@@ -207,44 +208,23 @@ function init() {
       && submittedCode.includes(codeParts[2])
       && submittedCode.includes(codeParts[3])) {
       messagesBoard.textContent = 'Submitted!'
+      // ---> transfers PlayerCode to GameGrid
+      nextRow[0].classList.remove('game-board-empty')
+      nextRow[0].classList.add(submittedCode[0])
+      nextRow[1].classList.remove('game-board-empty')
+      nextRow[1].classList.add(submittedCode[1])
+      nextRow[2].classList.remove('game-board-empty')
+      nextRow[2].classList.add(submittedCode[2])
+      nextRow[3].classList.remove('game-board-empty')
+      nextRow[3].classList.add(submittedCode[3])
     } else {
       messagesBoard.textContent = 'You can\'t repeat colors!'
+      return
     }
 
-    // ---> transfers PlayerCode to GameGrid
+    console.log(numberOfSubmits)
 
-    
-    nextRow[0].classList.remove('game-board-empty')
-    nextRow[0].classList.add(submittedCode[0])
-    nextRow[1].classList.remove('game-board-empty')
-    nextRow[1].classList.add(submittedCode[1])
-    nextRow[2].classList.remove('game-board-empty')
-    nextRow[2].classList.add(submittedCode[2])
-    nextRow[3].classList.remove('game-board-empty')
-    nextRow[3].classList.add(submittedCode[3])
-
-
-
-    // if (cellsGameBoard[45].classList.contains('game-board-empty')) {
-    //   cellsGameBoard[45].classList.remove('game-board-empty')
-    //   cellsGameBoard[45].classList.add(cellsUserCode[0].className)
-    //   cellsGameBoard[46].classList.remove('game-board-empty')
-    //   cellsGameBoard[46].classList.add(cellsUserCode[1].className)
-    //   cellsGameBoard[47].classList.remove('game-board-empty')
-    //   cellsGameBoard[47].classList.add(cellsUserCode[2].className)
-    //   cellsGameBoard[48].classList.remove('game-board-empty')
-    //   cellsGameBoard[48].classList.add(cellsUserCode[3].className)
-    // } else if (cellsGameBoard[40].classList.contains('game-board-empty')) {
-    //   cellsGameBoard[40].classList.remove('game-board-empty')
-    //   cellsGameBoard[40].classList.add(cellsUserCode[0].className)
-    //   cellsGameBoard[41].classList.remove('game-board-empty')
-    //   cellsGameBoard[41].classList.add(cellsUserCode[1].className)
-    //   cellsGameBoard[42].classList.remove('game-board-empty')
-    //   cellsGameBoard[42].classList.add(cellsUserCode[2].className)
-    //   cellsGameBoard[43].classList.remove('game-board-empty')
-    //   cellsGameBoard[43].classList.add(cellsUserCode[3].className)
-    // }
-
+    // --->  compares Player's and Random code and gives an array codeAnswer
     for (let i = 0; i < submittedCode.length; i++) {
       if (submittedCode[i] === randomCode[i]) {
         codeAnswer.push('code-right')
@@ -252,7 +232,13 @@ function init() {
         codeAnswer.push('code-wrong')
       }
     }
+
+    // ---> converts the answer array to random
+    handleRandomCode(randomAnswer)
+
+
     numberOfSubmits++
+    playerCodePosition = 0
   }
 
   // --->  Creates userCode and gameBoard grids
