@@ -2,10 +2,10 @@ function init() {
   //? ELEMENTS 
 
   //* DOM Elements
-  // ---> UserCode 
-  const userCode = document.querySelector('.user-code')
+  // ---> codeSelector 
+  const codeSelector = document.querySelector('.code-selector')
 
-  // ---> UserCode 
+  // ---> codeSelector 
   const theCode = document.querySelector('.the-code')
 
   // ---> GameBoard 
@@ -20,14 +20,23 @@ function init() {
   // ---> Reset 
   const resetBtn = document.querySelector('.restart')
 
-  //* Grid Vars
-  // ---> UserCode Grid
-  const cellsCode = []
-  const widthUserCode = 5
-  const cellCountUserCode = widthUserCode
+  //* Code Vars
+  // ---> array for Random code
+  const arrayOfCodeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d', 'code-part-e', 'code-part-f']
+  const codeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d']
+  const randomCode = arrayOfCodeParts // ---> array of classes of Random code
+  let codeAnswer = []
+  let playerCodePosition = 0
+  let numberOfSubmits = 0
 
-  // ---> UserCode Grid
-  const cellsUserCode = []
+  //* Grid Vars
+  // ---> codeSelector Grid
+  const cellsCode = []
+  const widthCodeSelector = arrayOfCodeParts.length
+  const cellCountCodeSelector = widthCodeSelector
+
+  // ---> codeSelector Grid
+  const cellsCodeSelector = []
   const widthCode = 4
   const cellCountCode = widthCode
 
@@ -64,33 +73,25 @@ function init() {
   const resultTen = []
   const resultsAll = [resultOne, resultTwo, resultThree, resultFour, resultFive, resultSix, resultSeven, resultEight, resultNine, resultTen]
 
-  //* Code Vars
-  // ---> array for Random code
-  const arrayOfCodeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d', 'code-part-e']
-  const codeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d']
-  const randomCode = arrayOfCodeParts // ---> array of classes of Random code
-  let codeAnswer = []
-  let playerCodePosition = 0
-  let numberOfSubmits = 0
+ 
 
 
   //? EXECUTION 
   
   // ---> creates ALL GRIDS
-  function createUserCodeGrid(startingPosition) {
-    // --->  creates userCode grid
-    for (let i = 0; i < cellCountUserCode; i++) {
-      const userCodeTotalWidth = widthUserCode * 40 + 'px'
-      const cssStyles = getComputedStyle(userCode)
-      const cssVal = String(cssStyles.getPropertyValue('--user-code-width')).trim()
-      userCode.style.setProperty('--user-code-width', userCodeTotalWidth)
+  function createCodeSelectorGrid(startingPosition) {
+    // --->  creates codeSelector grid
+    for (let i = 0; i < cellCountCodeSelector; i++) {
+      const codeSelectorTotalWidth = widthCodeSelector * 40 + 'px'
+      const cssStyles = getComputedStyle(codeSelector)
+      const cssVal = String(cssStyles.getPropertyValue('--code-selector-width')).trim()
+      codeSelector.style.setProperty('--code-selector-width', codeSelectorTotalWidth)
       console.log(cssVal)
       const cellUC = document.createElement('div')
       cellUC.textContent = 'U' + i
-      userCode.appendChild(cellUC)
-      cellsUserCode.push(cellUC)
-      // userCode.style.width = '200px'
-      cellsUserCode[startingPosition].classList.add('code-part-selected')
+      codeSelector.appendChild(cellUC)
+      cellsCodeSelector.push(cellUC)
+      cellsCodeSelector[startingPosition].classList.add('code-part-selected')
     }
     // ---> create the Code
     for (let a = 0; a < cellCountCode; a++) {
@@ -133,15 +134,15 @@ function init() {
         }
       }
     }
-    paintUserCodeGrid()
+    paintCodeSelectorGrid()
     handleRandomCode(arrayOfCodeParts)
     paintRandomCode()
   }
 
-  // ---> paints userCode with code 
-  function paintUserCodeGrid() {
+  // ---> paints codeSelector with code 
+  function paintCodeSelectorGrid() {
     for (let i = 0; i < 4; i++) {
-      cellsUserCode[i].classList.add(codeParts[i])
+      cellsCodeSelector[i].classList.add(codeParts[i])
     }
   }
 
@@ -168,46 +169,46 @@ function init() {
 
   // ---> playerCode changer 
   function handleKeyUp(event) {
-    const x = playerCodePosition % widthUserCode
+    const x = playerCodePosition % widthCodeSelector
     // if (event.keyCode === 38) {
-    //   if (cellsUserCode[playerCodePosition].classList.contains(codeParts[0])) {
-    //     cellsUserCode[playerCodePosition].classList.remove(codeParts[0])
-    //     cellsUserCode[playerCodePosition].classList.add(codeParts[3])
-    //   } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[3])) {
-    //     cellsUserCode[playerCodePosition].classList.remove(codeParts[3])
-    //     cellsUserCode[playerCodePosition].classList.add(codeParts[2])
-    //   } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[2])) {
-    //     cellsUserCode[playerCodePosition].classList.remove(codeParts[2])
-    //     cellsUserCode[playerCodePosition].classList.add(codeParts[1])
-    //   } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[1])) {
-    //     cellsUserCode[playerCodePosition].classList.remove(codeParts[1])
-    //     cellsUserCode[playerCodePosition].classList.add(codeParts[0])
+    //   if (cellsCodeSelector[playerCodePosition].classList.contains(codeParts[0])) {
+    //     cellsCodeSelector[playerCodePosition].classList.remove(codeParts[0])
+    //     cellsCodeSelector[playerCodePosition].classList.add(codeParts[3])
+    //   } else if (cellsCodeSelector[playerCodePosition].classList.contains(codeParts[3])) {
+    //     cellsCodeSelector[playerCodePosition].classList.remove(codeParts[3])
+    //     cellsCodeSelector[playerCodePosition].classList.add(codeParts[2])
+    //   } else if (cellsCodeSelector[playerCodePosition].classList.contains(codeParts[2])) {
+    //     cellsCodeSelector[playerCodePosition].classList.remove(codeParts[2])
+    //     cellsCodeSelector[playerCodePosition].classList.add(codeParts[1])
+    //   } else if (cellsCodeSelector[playerCodePosition].classList.contains(codeParts[1])) {
+    //     cellsCodeSelector[playerCodePosition].classList.remove(codeParts[1])
+    //     cellsCodeSelector[playerCodePosition].classList.add(codeParts[0])
     //   }
     // } else if (event.keyCode === 40) {
-    //   if (cellsUserCode[playerCodePosition].classList.contains(codeParts[0])) {
-    //     cellsUserCode[playerCodePosition].classList.remove(codeParts[0])
-    //     cellsUserCode[playerCodePosition].classList.add(codeParts[1])
-    //   } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[1])) {
-    //     cellsUserCode[playerCodePosition].classList.remove(codeParts[1])
-    //     cellsUserCode[playerCodePosition].classList.add(codeParts[2])
-    //   } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[2])) {
-    //     cellsUserCode[playerCodePosition].classList.remove(codeParts[2])
-    //     cellsUserCode[playerCodePosition].classList.add(codeParts[3])
-    //   } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[3])) {
-    //     cellsUserCode[playerCodePosition].classList.remove(codeParts[3])
-    //     cellsUserCode[playerCodePosition].classList.add(codeParts[0])
+    //   if (cellsCodeSelector[playerCodePosition].classList.contains(codeParts[0])) {
+    //     cellsCodeSelector[playerCodePosition].classList.remove(codeParts[0])
+    //     cellsCodeSelector[playerCodePosition].classList.add(codeParts[1])
+    //   } else if (cellsCodeSelector[playerCodePosition].classList.contains(codeParts[1])) {
+    //     cellsCodeSelector[playerCodePosition].classList.remove(codeParts[1])
+    //     cellsCodeSelector[playerCodePosition].classList.add(codeParts[2])
+    //   } else if (cellsCodeSelector[playerCodePosition].classList.contains(codeParts[2])) {
+    //     cellsCodeSelector[playerCodePosition].classList.remove(codeParts[2])
+    //     cellsCodeSelector[playerCodePosition].classList.add(codeParts[3])
+    //   } else if (cellsCodeSelector[playerCodePosition].classList.contains(codeParts[3])) {
+    //     cellsCodeSelector[playerCodePosition].classList.remove(codeParts[3])
+    //     cellsCodeSelector[playerCodePosition].classList.add(codeParts[0])
     //   }
     // } else if (event.keyCode === 39) {
-    //   if (x < widthUserCode - 1) {
-    //     cellsUserCode[playerCodePosition].classList.remove('code-part-selected')
+    //   if (x < widthCodeSelector - 1) {
+    //     cellsCodeSelector[playerCodePosition].classList.remove('code-part-selected')
     //     playerCodePosition++
-    //     cellsUserCode[playerCodePosition].classList.add('code-part-selected')
+    //     cellsCodeSelector[playerCodePosition].classList.add('code-part-selected')
     //   }
     // } else if (event.keyCode === 37) {
     //   if (x > 0) {
-    //     cellsUserCode[playerCodePosition].classList.remove('code-part-selected')
+    //     cellsCodeSelector[playerCodePosition].classList.remove('code-part-selected')
     //     playerCodePosition--
-    //     cellsUserCode[playerCodePosition].classList.add('code-part-selected')
+    //     cellsCodeSelector[playerCodePosition].classList.add('code-part-selected')
     //   }
     // }
   }
@@ -215,14 +216,14 @@ function init() {
 
 
   function handleSubmitCode() {
-    cellsUserCode[playerCodePosition].classList.remove('code-part-selected')
+    cellsCodeSelector[playerCodePosition].classList.remove('code-part-selected')
     codeAnswer = []
     const nextRow = rows[numberOfSubmits]
     const submittedCode = [] // ---> array of classes of Submitted code
-    cellsUserCode.forEach(cell => {
+    cellsCodeSelector.forEach(cell => {
       cell.classList.remove('code-part-selected')
       submittedCode.push(cell.className)
-      cellsUserCode[0].classList.add('code-part-selected')
+      cellsCodeSelector[0].classList.add('code-part-selected')
     })
     // ---> checks for the code to have all different parts and no repeats
     if (submittedCode.includes(codeParts[0])
@@ -283,7 +284,7 @@ function init() {
     if (resetOk === true) {
       playerCodePosition = 0
       numberOfSubmits = 0
-      paintUserCodeGrid()
+      paintCodeSelectorGrid()
       handleRandomCode(arrayOfCodeParts)
       paintRandomCode()
       for (let i = 0; i < cellsGameBoard.length; i++) {
@@ -302,8 +303,8 @@ function init() {
 
 
 
-  // --->  Creates userCode and gameBoard grids
-  createUserCodeGrid(playerCodePosition)
+  // --->  Creates codeSelector and gameBoard grids
+  createCodeSelectorGrid(playerCodePosition)
 
 
 
