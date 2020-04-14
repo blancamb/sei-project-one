@@ -66,7 +66,7 @@ function init() {
 
   //* Code Vars
   // ---> array for Random code
-  const arrayOfCodeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d']
+  const arrayOfCodeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d', 'code-part-e']
   const codeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d']
   const randomCode = arrayOfCodeParts // ---> array of classes of Random code
   let codeAnswer = []
@@ -134,7 +134,7 @@ function init() {
 
   // ---> paints userCode with code 
   function paintUserCodeGrid() {
-    for (let i = 0; i < arrayOfCodeParts.length; i++) {
+    for (let i = 0; i < 4; i++) {
       cellsUserCode[i].classList.add(codeParts[i])
     }
   }
@@ -154,8 +154,9 @@ function init() {
   }
 
   function paintRandomCode() {
+    const randomC = randomCode.slice(0, cellsCode.length)
     for (let i = 0; i < cellsCode.length; i++) {
-      cellsCode[i].classList.add(randomCode[i])
+      cellsCode[i].classList.add(randomC[i])
     }
   }
 
@@ -272,21 +273,25 @@ function init() {
 
   // ---> resets the board
   function handleReset() {
-    playerCodePosition = 0
-    numberOfSubmits = 0
-    paintUserCodeGrid()
-    handleRandomCode(arrayOfCodeParts)
-    paintRandomCode()
-    for (let i = 0; i < cellsGameBoard.length; i++) {
-      if (cellsGameBoard[i].classList.contains('results')) {
-        // cellsGameBoard[i].classList = ('results')
-        for (let a = 0; a < cellsResults.length; a++) {
-          cellsResults[a].classList = ('results-empty')
+    const resetOk = window.confirm('If you press OK, score will restart! Press CANCEL to go back to the game')
+    if (resetOk === true) {
+      playerCodePosition = 0
+      numberOfSubmits = 0
+      paintUserCodeGrid()
+      handleRandomCode(arrayOfCodeParts)
+      paintRandomCode()
+      for (let i = 0; i < cellsGameBoard.length; i++) {
+        if (cellsGameBoard[i].classList.contains('results')) {
+          // cellsGameBoard[i].classList = ('results')
+          for (let a = 0; a < cellsResults.length; a++) {
+            cellsResults[a].classList = ('results-empty')
+          }
+        } else {
+          cellsGameBoard[i].classList = ('game-board-empty')
         }
-      } else {
-        cellsGameBoard[i].classList = ('game-board-empty')
       }
     }
+    
   }
 
 

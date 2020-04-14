@@ -58,7 +58,7 @@ margin: 10px 0 0 0;
   height:40px;
   width:160px;
   margin-bottom:20px;
-  display: none;
+  /* display: none; */
 }
 .the-code div {
   border:1px solid lightgrey;
