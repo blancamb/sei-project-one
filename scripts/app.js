@@ -189,17 +189,15 @@ function init() {
         codeSelectorPosition--
         cellsCodeSelector[codeSelectorPosition].classList.add('code-part-selected')
       }
-    } else if (event.keyCode === 16) {
+    } else if (event.keyCode === 13) {
       cellsCodeSelector[codeSelectorPosition].classList.remove('code-part-selected')
+      cellsUserCode[userCodePosition].classList = ''
+      cellsUserCode[userCodePosition].classList.add('user-code-selected')
       cellsUserCode[userCodePosition].classList.add(cellsCodeSelector[codeSelectorPosition].className)
       cellsCodeSelector[codeSelectorPosition].classList.add('code-part-selected')
-    } else if (event.keyCode === 13) {
-      handleSubmitCode()
     }
-    console.log(numberOfSubmits)
     // ---> userCode key events
     const xx = userCodePosition % widthUserCode
-   
     if (event.keyCode === 189) {
       if (xx < widthUserCode - 1) {
         cellsUserCode[userCodePosition].classList.remove('user-code-selected')
@@ -222,24 +220,19 @@ function init() {
     const nextRow = rows[numberOfSubmits]
     const submittedCode = [] // ---> array of classes of Submitted code
     cellsUserCode.forEach(cell => {
-      cell.classList.remove('code-part-selected')
+      cell.classList.remove('user-code-selected')
       submittedCode.push(cell.className)
-      cellsUserCode[0].classList.add('code-part-selected')
+      cellsUserCode[userCodePosition].classList.add('user-code-selected')
     })
     // ---> checks for the code to have all different parts and no repeats
-    if (submittedCode.includes(randomC[0])
-      && submittedCode.includes(randomC[1])
-      && submittedCode.includes(randomC[2])
-      && submittedCode.includes(randomC[3])) {
-      messagesBoard.textContent = 'Submitted!'
+    submittedCode.sort()
+    for (let i = 0; i < submittedCode.length; i++) {
+      if (submittedCode[i] === submittedCode[i + 1]) {
+        console.log('duplicates!')
+        return
+      }
       // ---> transfers PlayerCode to GameGrid
-      nextRow[0].classList = (submittedCode[0])
-      nextRow[1].classList = (submittedCode[1])
-      nextRow[2].classList = (submittedCode[2])
-      nextRow[3].classList = (submittedCode[3])
-    } else {
-      messagesBoard.textContent = 'You can\'t repeat colors!'
-      return
+      nextRow[i].classList = (submittedCode[i])
     }
     // --->  compares Player's and Random code and gives an array codeAnswer
     for (let i = 0; i < submittedCode.length; i++) {
@@ -250,49 +243,44 @@ function init() {
       }
     }
 
-    // ---> converts the answer array to random
-    handleRandomCode(codeAnswer)
+    handleRandomCode(codeAnswer) // ---> converts the answer array to random
 
     // ---> transfers randomAnswer to Results grid
     const nextResult = resultsAll[numberOfSubmits]
-    nextResult[0].classList.add(codeAnswer[0])
-    nextResult[1].classList.add(codeAnswer[1])
-    nextResult[2].classList.add(codeAnswer[2])
-    nextResult[3].classList.add(codeAnswer[3])
-
-    // ---> WIN logic
-    if (codeAnswer.includes('code-wrong')) {
-      messagesBoard.textContent = 'try again!'
-    } else {
-      messagesBoard.textContent = 'YOU WIN'
-      return
+    for (let i = 0; i < codeAnswer.length; i++) {
+      nextResult[i].classList.add(codeAnswer[i])
     }
-    // ---> GAME OVER logic
-    // if (numberOfSubmits === 10) {
-    //   messagesBoard.textContent = 'YOU LOSE'
-    //   submitCodeBtn.disabled = true
-    // } else { 
-
-    // }
-
     numberOfSubmits++
     codeSelectorPosition = 0
     userCodePosition = 0
-  }
+    // ---> WIN logic
+    if (numberOfSubmits < 10 && codeAnswer.includes('code-wrong')) {
+      messagesBoard.textContent = 'try again!'
+    // ---> GAME OVER logic
+    } else if (numberOfSubmits >= 10 && codeAnswer.includes('code-wrong')) {
+      messagesBoard.textContent = 'YOU LOSE'
+      submitCodeBtn.disabled = true
+    } else if (numberOfSubmits < 10) {
+      messagesBoard.textContent = 'YOU WIN'
+    }
+    console.log(numberOfSubmits)
 
+  }
   // ---> resets the board
   function handleReset() {
     const resetOk = window.confirm('If you press OK, score will restart! Press CANCEL to go back to the game')
     if (resetOk === true) {
+      cellsCodeSelector[codeSelectorPosition].classList.remove('code-part-selected')
       codeSelectorPosition = 0
+      cellsCodeSelector[codeSelectorPosition].classList.add('code-part-selected')
+      cellsUserCode[userCodePosition].classList.remove('user-code-selected')
       userCodePosition = 0
+      cellsUserCode[userCodePosition].classList.add('user-code-selected')
       numberOfSubmits = 0
-      paintCodeSelectorGrid()
       handleRandomCode(arrayOfCodeParts)
       paintRandomCode()
       for (let i = 0; i < cellsGameBoard.length; i++) {
         if (cellsGameBoard[i].classList.contains('results')) {
-          // cellsGameBoard[i].classList = ('results')
           for (let a = 0; a < cellsResults.length; a++) {
             cellsResults[a].classList = ('results-empty')
           }
