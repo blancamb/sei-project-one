@@ -2,20 +2,23 @@ function init() {
   //? ELEMENTS 
 
   //* DOM Elements
-  // ---> UserCode DOM Elements
+  // ---> UserCode 
   const userCode = document.querySelector('.user-code')
 
-  // ---> UserCode DOM Elements
+  // ---> UserCode 
   const theCode = document.querySelector('.the-code')
 
-  // ---> GameBoard DOM Elements
+  // ---> GameBoard 
   const gameBoard = document.querySelector('.game-board')
 
-  // ---> Submit code
+  // ---> Submit code 
   const submitCodeBtn = document.querySelector('.submit-code')
 
-  // ---> Messge-Board
+  // ---> Message-Board
   const messagesBoard = document.querySelector('.message-board')
+
+  // ---> Reset 
+  const resetBtn = document.querySelector('.restart')
 
   //* Grid Vars
   // ---> UserCode Grid
@@ -30,6 +33,8 @@ function init() {
 
   // ---> GameBoard Grid
   const rowsGameBoard = []
+  const cellsGameBoard = []
+  const cellsResults = []
   const widthGameBoard = 5
   const cellCountGameBoard = widthGameBoard
   const widthGameBoardResult = 2
@@ -65,7 +70,6 @@ function init() {
   const codeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d']
   const randomCode = arrayOfCodeParts // ---> array of classes of Random code
   let codeAnswer = []
-  const randomAnswer = codeAnswer
   let playerCodePosition = 0
   let numberOfSubmits = 0
 
@@ -102,6 +106,7 @@ function init() {
         cellGB.textContent = b + ' - G' + c
         row.appendChild(cellGB)
         rows[b].push(cellGB)
+        cellsGameBoard.push(cellGB)
         cellGB.dataset.cellNum = c + 1
         cellGB.classList.add('game-board-empty')
         // ---> selects the last cell of every row
@@ -116,7 +121,8 @@ function init() {
             cellR.textContent = d
             cellGB.appendChild(cellR)
             resultsAll[b].push(cellR)
-
+            cellsResults.push(cellR)
+            cellR.classList.add('results-empty')
           }
         }
       }
@@ -218,19 +224,14 @@ function init() {
       && submittedCode.includes(codeParts[3])) {
       messagesBoard.textContent = 'Submitted!'
       // ---> transfers PlayerCode to GameGrid
-      nextRow[0].classList.remove('game-board-empty')
-      nextRow[0].classList.add(submittedCode[0])
-      nextRow[1].classList.remove('game-board-empty')
-      nextRow[1].classList.add(submittedCode[1])
-      nextRow[2].classList.remove('game-board-empty')
-      nextRow[2].classList.add(submittedCode[2])
-      nextRow[3].classList.remove('game-board-empty')
-      nextRow[3].classList.add(submittedCode[3])
+      nextRow[0].classList = (submittedCode[0])
+      nextRow[1].classList = (submittedCode[1])
+      nextRow[2].classList = (submittedCode[2])
+      nextRow[3].classList = (submittedCode[3])
     } else {
       messagesBoard.textContent = 'You can\'t repeat colors!'
       return
     }
-
     // --->  compares Player's and Random code and gives an array codeAnswer
     for (let i = 0; i < submittedCode.length; i++) {
       if (submittedCode[i] === randomCode[i]) {
@@ -242,28 +243,55 @@ function init() {
 
     // ---> converts the answer array to random
     handleRandomCode(codeAnswer)
-    console.log(codeAnswer)
-      
+
     // ---> transfers randomAnswer to Results grid
     const nextResult = resultsAll[numberOfSubmits]
-    
-    nextResult[0].classList = ''
     nextResult[0].classList.add(codeAnswer[0])
-    nextResult[1].classList.remove(codeAnswer[1])
     nextResult[1].classList.add(codeAnswer[1])
-    nextResult[2].classList.remove(codeAnswer[2])
     nextResult[2].classList.add(codeAnswer[2])
-    nextResult[3].classList.remove(codeAnswer[3])
     nextResult[3].classList.add(codeAnswer[3])
 
-    console.log(nextResult[0])
+    // ---> WIN logic
+    if (codeAnswer.includes('code-wrong')) {
+      messagesBoard.textContent = 'try again!'
+    } else {
+      messagesBoard.textContent = 'YOU WIN'
+      return
+    }
+    // ---> GAME OVER logic
+    // if (numberOfSubmits === 10) {
+    //   messagesBoard.textContent = 'YOU LOSE'
+    //   submitCodeBtn.disabled = true
+    // } else { 
+
+    // }
+
     numberOfSubmits++
     playerCodePosition = 0
   }
-  console.log(resultTwo)
+
+  // ---> resets the board
+  function handleReset() {
+    playerCodePosition = 0
+    numberOfSubmits = 0
+    paintUserCodeGrid()
+    handleRandomCode(arrayOfCodeParts)
+    paintRandomCode()
+    for (let i = 0; i < cellsGameBoard.length; i++) {
+      if (cellsGameBoard[i].classList.contains('results')) {
+        // cellsGameBoard[i].classList = ('results')
+        for (let a = 0; a < cellsResults.length; a++) {
+          cellsResults[a].classList = ('results-empty')
+        }
+      } else {
+        cellsGameBoard[i].classList = ('game-board-empty')
+      }
+    }
+  }
+
+
 
   // --->  Creates userCode and gameBoard grids
-
   createUserCodeGrid(playerCodePosition)
 
 
@@ -273,6 +301,7 @@ function init() {
 
   document.addEventListener('keyup', handleKeyUp)
   submitCodeBtn.addEventListener('click', handleSubmitCode)
+  resetBtn.addEventListener('click', handleReset)
 
 
 }
