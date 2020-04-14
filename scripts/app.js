@@ -17,7 +17,8 @@ function init() {
   let codeAnswer = []
 
   //* Game Vars
-  let playerCodePosition = 0
+  let codeSelectorPosition = 0
+  let userCodePosition = 0
   let numberOfSubmits = 0
   const gameLevel = 1
 
@@ -34,7 +35,7 @@ function init() {
   const cellsUserCode = []
   const widthUserCode = widthCode
   const cellCountUserCode = widthUserCode
-  
+
 
   // ---> GameBoard Grid
   const rowsGameBoard = []
@@ -69,23 +70,22 @@ function init() {
   const resultTen = []
   const resultsAll = [resultOne, resultTwo, resultThree, resultFour, resultFive, resultSix, resultSeven, resultEight, resultNine, resultTen]
 
- 
+
   //? EXECUTION 
-  
+
   // ---> creates ALL GRIDS
-  function createGameBoard(startingPosition) {
+  function createGameBoard(startingPositionCS, startingPositionUC) {
     // --->  creates codeSelector grid
     for (let i = 0; i < cellCountCodeSelector; i++) {
       const codeSelectorTotalWidth = widthCodeSelector * 40 + 'px'
       const cssStyles = getComputedStyle(codeSelector)
       const cssVal = String(cssStyles.getPropertyValue('--code-selector-width')).trim()
       codeSelector.style.setProperty('--code-selector-width', codeSelectorTotalWidth)
-      console.log(cssVal)
       const cellCS = document.createElement('div')
       cellCS.textContent = 'CS' + i
       codeSelector.appendChild(cellCS)
       cellsCodeSelector.push(cellCS)
-      cellsCodeSelector[startingPosition].classList.add('code-part-selected')
+      cellsCodeSelector[startingPositionCS].classList.add('code-part-selected')
     }
     // ---> creates the Code
     for (let a = 0; a < cellCountCode; a++) {
@@ -100,12 +100,11 @@ function init() {
       const cssStylesTwo = getComputedStyle(userCode)
       const cssValTwo = String(cssStylesTwo.getPropertyValue('--user-code-width')).trim()
       userCode.style.setProperty('--user-code-width', userCodeTotalWidth)
-      console.log(cssValTwo)
       const cellUC = document.createElement('div')
       cellUC.textContent = 'UC' + b
       userCode.appendChild(cellUC)
       cellsUserCode.push(cellUC)
-      cellsUserCode[startingPosition].classList.add('code-part-selected')
+      cellsUserCode[startingPositionUC].classList.add('user-code-selected')
     }
     // ---> creates gameBoard grid: 10 rows
     for (let c = 0; c < 10; c++) {
@@ -174,56 +173,51 @@ function init() {
     }
   }
 
-  // ---> playerCode changer 
+  // ---> codeSelector key events
   function handleKeyUp(event) {
-    const x = playerCodePosition % widthCodeSelector
-    // if (event.keyCode === 38) {
-    //   if (cellsCodeSelector[playerCodePosition].classList.contains(codeParts[0])) {
-    //     cellsCodeSelector[playerCodePosition].classList.remove(codeParts[0])
-    //     cellsCodeSelector[playerCodePosition].classList.add(codeParts[3])
-    //   } else if (cellsCodeSelector[playerCodePosition].classList.contains(codeParts[3])) {
-    //     cellsCodeSelector[playerCodePosition].classList.remove(codeParts[3])
-    //     cellsCodeSelector[playerCodePosition].classList.add(codeParts[2])
-    //   } else if (cellsCodeSelector[playerCodePosition].classList.contains(codeParts[2])) {
-    //     cellsCodeSelector[playerCodePosition].classList.remove(codeParts[2])
-    //     cellsCodeSelector[playerCodePosition].classList.add(codeParts[1])
-    //   } else if (cellsCodeSelector[playerCodePosition].classList.contains(codeParts[1])) {
-    //     cellsCodeSelector[playerCodePosition].classList.remove(codeParts[1])
-    //     cellsCodeSelector[playerCodePosition].classList.add(codeParts[0])
-    //   }
-    // } else if (event.keyCode === 40) {
-    //   if (cellsCodeSelector[playerCodePosition].classList.contains(codeParts[0])) {
-    //     cellsCodeSelector[playerCodePosition].classList.remove(codeParts[0])
-    //     cellsCodeSelector[playerCodePosition].classList.add(codeParts[1])
-    //   } else if (cellsCodeSelector[playerCodePosition].classList.contains(codeParts[1])) {
-    //     cellsCodeSelector[playerCodePosition].classList.remove(codeParts[1])
-    //     cellsCodeSelector[playerCodePosition].classList.add(codeParts[2])
-    //   } else if (cellsCodeSelector[playerCodePosition].classList.contains(codeParts[2])) {
-    //     cellsCodeSelector[playerCodePosition].classList.remove(codeParts[2])
-    //     cellsCodeSelector[playerCodePosition].classList.add(codeParts[3])
-    //   } else if (cellsCodeSelector[playerCodePosition].classList.contains(codeParts[3])) {
-    //     cellsCodeSelector[playerCodePosition].classList.remove(codeParts[3])
-    //     cellsCodeSelector[playerCodePosition].classList.add(codeParts[0])
-    //   }
-    // } else if (event.keyCode === 39) {
-    //   if (x < widthCodeSelector - 1) {
-    //     cellsCodeSelector[playerCodePosition].classList.remove('code-part-selected')
-    //     playerCodePosition++
-    //     cellsCodeSelector[playerCodePosition].classList.add('code-part-selected')
-    //   }
-    // } else if (event.keyCode === 37) {
-    //   if (x > 0) {
-    //     cellsCodeSelector[playerCodePosition].classList.remove('code-part-selected')
-    //     playerCodePosition--
-    //     cellsCodeSelector[playerCodePosition].classList.add('code-part-selected')
-    //   }
-    // }
+    const x = codeSelectorPosition % widthCodeSelector
+
+    if (event.keyCode === 39) {
+      if (x < widthCodeSelector - 1) {
+        cellsCodeSelector[codeSelectorPosition].classList.remove('code-part-selected')
+        codeSelectorPosition++
+        cellsCodeSelector[codeSelectorPosition].classList.add('code-part-selected')
+      }
+    } else if (event.keyCode === 37) {
+      if (x > 0) {
+        cellsCodeSelector[codeSelectorPosition].classList.remove('code-part-selected')
+        codeSelectorPosition--
+        cellsCodeSelector[codeSelectorPosition].classList.add('code-part-selected')
+      }
+    } else if (event.keyCode === 13) {
+      cellsCodeSelector[codeSelectorPosition].classList.remove('code-part-selected')
+      cellsUserCode[userCodePosition].classList.add(cellsCodeSelector[codeSelectorPosition].className)
+      cellsCodeSelector[codeSelectorPosition].classList.add('code-part-selected')
+    }
+    // ---> userCode key events
+    const xx = userCodePosition % widthUserCode
+   
+    if (event.keyCode === 88) {
+      if (xx < widthUserCode - 1) {
+        cellsUserCode[userCodePosition].classList.remove('user-code-selected')
+        userCodePosition++
+        cellsUserCode[userCodePosition].classList.add('user-code-selected')
+      }
+    
+    } else if (event.keyCode === 90) {
+      if (xx > 0) {
+        cellsUserCode[userCodePosition].classList.remove('user-code-selected')
+        userCodePosition--
+        cellsUserCode[userCodePosition].classList.add('user-code-selected')
+      }
+    }
   }
 
 
 
+
   function handleSubmitCode() {
-    cellsCodeSelector[playerCodePosition].classList.remove('code-part-selected')
+    cellsCodeSelector[codeSelectorPosition].classList.remove('code-part-selected')
     codeAnswer = []
     const nextRow = rows[numberOfSubmits]
     const submittedCode = [] // ---> array of classes of Submitted code
@@ -282,14 +276,16 @@ function init() {
     // }
 
     numberOfSubmits++
-    playerCodePosition = 0
+    codeSelectorPosition = 0
+    userCodePosition = 0
   }
 
   // ---> resets the board
   function handleReset() {
     const resetOk = window.confirm('If you press OK, score will restart! Press CANCEL to go back to the game')
     if (resetOk === true) {
-      playerCodePosition = 0
+      codeSelectorPosition = 0
+      userCodePosition = 0
       numberOfSubmits = 0
       paintCodeSelectorGrid()
       handleRandomCode(arrayOfCodeParts)
@@ -305,13 +301,13 @@ function init() {
         }
       }
     }
-    
+
   }
 
 
 
   // --->  Creates codeSelector and gameBoard grids
-  createGameBoard(playerCodePosition)
+  createGameBoard(codeSelectorPosition, userCodePosition)
 
 
 
