@@ -23,7 +23,7 @@ function init() {
   //* Grid Vars
   // ---> UserCode Grid
   const cellsCode = []
-  const widthUserCode = 4
+  const widthUserCode = 5
   const cellCountUserCode = widthUserCode
 
   // ---> UserCode Grid
@@ -75,15 +75,21 @@ function init() {
 
 
   //? EXECUTION 
-
+  
   // ---> creates ALL GRIDS
   function createUserCodeGrid(startingPosition) {
     // --->  creates userCode grid
     for (let i = 0; i < cellCountUserCode; i++) {
+      const userCodeTotalWidth = widthUserCode * 40 + 'px'
+      const cssStyles = getComputedStyle(userCode)
+      const cssVal = String(cssStyles.getPropertyValue('--user-code-width')).trim()
+      userCode.style.setProperty('--user-code-width', userCodeTotalWidth)
+      console.log(cssVal)
       const cellUC = document.createElement('div')
       cellUC.textContent = 'U' + i
       userCode.appendChild(cellUC)
       cellsUserCode.push(cellUC)
+      // userCode.style.width = '200px'
       cellsUserCode[startingPosition].classList.add('code-part-selected')
     }
     // ---> create the Code
@@ -163,47 +169,47 @@ function init() {
   // ---> playerCode changer 
   function handleKeyUp(event) {
     const x = playerCodePosition % widthUserCode
-    if (event.keyCode === 38) {
-      if (cellsUserCode[playerCodePosition].classList.contains(codeParts[0])) {
-        cellsUserCode[playerCodePosition].classList.remove(codeParts[0])
-        cellsUserCode[playerCodePosition].classList.add(codeParts[3])
-      } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[3])) {
-        cellsUserCode[playerCodePosition].classList.remove(codeParts[3])
-        cellsUserCode[playerCodePosition].classList.add(codeParts[2])
-      } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[2])) {
-        cellsUserCode[playerCodePosition].classList.remove(codeParts[2])
-        cellsUserCode[playerCodePosition].classList.add(codeParts[1])
-      } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[1])) {
-        cellsUserCode[playerCodePosition].classList.remove(codeParts[1])
-        cellsUserCode[playerCodePosition].classList.add(codeParts[0])
-      }
-    } else if (event.keyCode === 40) {
-      if (cellsUserCode[playerCodePosition].classList.contains(codeParts[0])) {
-        cellsUserCode[playerCodePosition].classList.remove(codeParts[0])
-        cellsUserCode[playerCodePosition].classList.add(codeParts[1])
-      } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[1])) {
-        cellsUserCode[playerCodePosition].classList.remove(codeParts[1])
-        cellsUserCode[playerCodePosition].classList.add(codeParts[2])
-      } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[2])) {
-        cellsUserCode[playerCodePosition].classList.remove(codeParts[2])
-        cellsUserCode[playerCodePosition].classList.add(codeParts[3])
-      } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[3])) {
-        cellsUserCode[playerCodePosition].classList.remove(codeParts[3])
-        cellsUserCode[playerCodePosition].classList.add(codeParts[0])
-      }
-    } else if (event.keyCode === 39) {
-      if (x < widthUserCode - 1) {
-        cellsUserCode[playerCodePosition].classList.remove('code-part-selected')
-        playerCodePosition++
-        cellsUserCode[playerCodePosition].classList.add('code-part-selected')
-      }
-    } else if (event.keyCode === 37) {
-      if (x > 0) {
-        cellsUserCode[playerCodePosition].classList.remove('code-part-selected')
-        playerCodePosition--
-        cellsUserCode[playerCodePosition].classList.add('code-part-selected')
-      }
-    }
+    // if (event.keyCode === 38) {
+    //   if (cellsUserCode[playerCodePosition].classList.contains(codeParts[0])) {
+    //     cellsUserCode[playerCodePosition].classList.remove(codeParts[0])
+    //     cellsUserCode[playerCodePosition].classList.add(codeParts[3])
+    //   } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[3])) {
+    //     cellsUserCode[playerCodePosition].classList.remove(codeParts[3])
+    //     cellsUserCode[playerCodePosition].classList.add(codeParts[2])
+    //   } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[2])) {
+    //     cellsUserCode[playerCodePosition].classList.remove(codeParts[2])
+    //     cellsUserCode[playerCodePosition].classList.add(codeParts[1])
+    //   } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[1])) {
+    //     cellsUserCode[playerCodePosition].classList.remove(codeParts[1])
+    //     cellsUserCode[playerCodePosition].classList.add(codeParts[0])
+    //   }
+    // } else if (event.keyCode === 40) {
+    //   if (cellsUserCode[playerCodePosition].classList.contains(codeParts[0])) {
+    //     cellsUserCode[playerCodePosition].classList.remove(codeParts[0])
+    //     cellsUserCode[playerCodePosition].classList.add(codeParts[1])
+    //   } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[1])) {
+    //     cellsUserCode[playerCodePosition].classList.remove(codeParts[1])
+    //     cellsUserCode[playerCodePosition].classList.add(codeParts[2])
+    //   } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[2])) {
+    //     cellsUserCode[playerCodePosition].classList.remove(codeParts[2])
+    //     cellsUserCode[playerCodePosition].classList.add(codeParts[3])
+    //   } else if (cellsUserCode[playerCodePosition].classList.contains(codeParts[3])) {
+    //     cellsUserCode[playerCodePosition].classList.remove(codeParts[3])
+    //     cellsUserCode[playerCodePosition].classList.add(codeParts[0])
+    //   }
+    // } else if (event.keyCode === 39) {
+    //   if (x < widthUserCode - 1) {
+    //     cellsUserCode[playerCodePosition].classList.remove('code-part-selected')
+    //     playerCodePosition++
+    //     cellsUserCode[playerCodePosition].classList.add('code-part-selected')
+    //   }
+    // } else if (event.keyCode === 37) {
+    //   if (x > 0) {
+    //     cellsUserCode[playerCodePosition].classList.remove('code-part-selected')
+    //     playerCodePosition--
+    //     cellsUserCode[playerCodePosition].classList.add('code-part-selected')
+    //   }
+    // }
   }
 
 

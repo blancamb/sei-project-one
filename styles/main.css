@@ -1,4 +1,8 @@
 
+:root {
+  --user-code-width: 0px;
+}
+
 * {
   box-sizing:border-box;
 }
@@ -38,7 +42,7 @@ margin: 10px 0 0 0;
   height:100%;
   justify-content:center;
   height:40px;
-  width:160px;
+  width:var(--user-code-width);
   margin:20px;
 }
 .user-code div {
