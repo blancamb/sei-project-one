@@ -12,9 +12,9 @@ function init() {
 
   //* Code Vars
   const arrayOfCodeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d', 'code-part-e', 'code-part-f']
-  const codeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d']
   const randomCode = arrayOfCodeParts // ---> array of classes of Random code
   let codeAnswer = []
+  let randomC = []
 
   //* Game Vars
   let codeSelectorPosition = 0
@@ -148,7 +148,7 @@ function init() {
   // ---> paints codeSelector with codeParts
   function paintCodeSelectorGrid() {
     for (let i = 0; i < cellsCodeSelector.length; i++) {
-      cellsCodeSelector[i].classList.add(codeParts[i])
+      cellsCodeSelector[i].classList.add(arrayOfCodeParts[i])
     }
   }
 
@@ -167,7 +167,7 @@ function init() {
   }
 
   function paintRandomCode() {
-    const randomC = randomCode.slice(0, cellsRandomCode.length)
+    randomC = randomCode.slice(0, cellsRandomCode.length)
     for (let i = 0; i < cellsRandomCode.length; i++) {
       cellsRandomCode[i].classList.add(randomC[i])
     }
@@ -189,22 +189,25 @@ function init() {
         codeSelectorPosition--
         cellsCodeSelector[codeSelectorPosition].classList.add('code-part-selected')
       }
-    } else if (event.keyCode === 13) {
+    } else if (event.keyCode === 16) {
       cellsCodeSelector[codeSelectorPosition].classList.remove('code-part-selected')
       cellsUserCode[userCodePosition].classList.add(cellsCodeSelector[codeSelectorPosition].className)
       cellsCodeSelector[codeSelectorPosition].classList.add('code-part-selected')
+    } else if (event.keyCode === 13) {
+      handleSubmitCode()
     }
+    console.log(numberOfSubmits)
     // ---> userCode key events
     const xx = userCodePosition % widthUserCode
    
-    if (event.keyCode === 88) {
+    if (event.keyCode === 189) {
       if (xx < widthUserCode - 1) {
         cellsUserCode[userCodePosition].classList.remove('user-code-selected')
         userCodePosition++
         cellsUserCode[userCodePosition].classList.add('user-code-selected')
       }
     
-    } else if (event.keyCode === 90) {
+    } else if (event.keyCode === 190) {
       if (xx > 0) {
         cellsUserCode[userCodePosition].classList.remove('user-code-selected')
         userCodePosition--
@@ -213,24 +216,21 @@ function init() {
     }
   }
 
-
-
-
   function handleSubmitCode() {
-    cellsCodeSelector[codeSelectorPosition].classList.remove('code-part-selected')
+    cellsUserCode[userCodePosition].classList.remove('user-code-selected')
     codeAnswer = []
     const nextRow = rows[numberOfSubmits]
     const submittedCode = [] // ---> array of classes of Submitted code
-    cellsCodeSelector.forEach(cell => {
+    cellsUserCode.forEach(cell => {
       cell.classList.remove('code-part-selected')
       submittedCode.push(cell.className)
-      cellsCodeSelector[0].classList.add('code-part-selected')
+      cellsUserCode[0].classList.add('code-part-selected')
     })
     // ---> checks for the code to have all different parts and no repeats
-    if (submittedCode.includes(codeParts[0])
-      && submittedCode.includes(codeParts[1])
-      && submittedCode.includes(codeParts[2])
-      && submittedCode.includes(codeParts[3])) {
+    if (submittedCode.includes(randomC[0])
+      && submittedCode.includes(randomC[1])
+      && submittedCode.includes(randomC[2])
+      && submittedCode.includes(randomC[3])) {
       messagesBoard.textContent = 'Submitted!'
       // ---> transfers PlayerCode to GameGrid
       nextRow[0].classList = (submittedCode[0])
@@ -243,9 +243,9 @@ function init() {
     }
     // --->  compares Player's and Random code and gives an array codeAnswer
     for (let i = 0; i < submittedCode.length; i++) {
-      if (submittedCode[i] === randomCode[i]) {
+      if (submittedCode[i] === randomC[i]) {
         codeAnswer.push('code-right')
-      } else if (submittedCode[i] !== randomCode[i]) {
+      } else if (submittedCode[i] !== randomC[i]) {
         codeAnswer.push('code-wrong')
       }
     }

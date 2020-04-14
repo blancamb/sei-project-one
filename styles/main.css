@@ -154,7 +154,12 @@ h1 {
 .code-part-d {
   background-color: yellow;
 }
-
+.code-part-e {
+  background-color: rebeccapurple;
+}
+.code-part-f {
+  background-color: orange;
+}
 .game-board-empty {
   background-color: sandybrown;
 }
