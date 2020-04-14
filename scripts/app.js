@@ -2,43 +2,39 @@ function init() {
   //? ELEMENTS 
 
   //* DOM Elements
-  // ---> codeSelector 
   const codeSelector = document.querySelector('.code-selector')
-
-  // ---> codeSelector 
   const theCode = document.querySelector('.the-code')
-
-  // ---> GameBoard 
+  const userCode = document.querySelector('.user-code')
   const gameBoard = document.querySelector('.game-board')
-
-  // ---> Submit code 
   const submitCodeBtn = document.querySelector('.submit-code')
-
-  // ---> Message-Board
   const messagesBoard = document.querySelector('.message-board')
-
-  // ---> Reset 
   const resetBtn = document.querySelector('.restart')
 
   //* Code Vars
-  // ---> array for Random code
   const arrayOfCodeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d', 'code-part-e', 'code-part-f']
   const codeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d']
   const randomCode = arrayOfCodeParts // ---> array of classes of Random code
   let codeAnswer = []
+
+  //* Game Vars
   let playerCodePosition = 0
   let numberOfSubmits = 0
+  const gameLevel = 1
 
   //* Grid Vars
   // ---> codeSelector Grid
-  const cellsCode = []
+  const cellsCodeSelector = []
   const widthCodeSelector = arrayOfCodeParts.length
   const cellCountCodeSelector = widthCodeSelector
-
-  // ---> codeSelector Grid
-  const cellsCodeSelector = []
+  // ---> randomCode Grid
+  const cellsRandomCode = []
   const widthCode = 4
   const cellCountCode = widthCode
+  // ---> userCode Grid
+  const cellsUserCode = []
+  const widthUserCode = widthCode
+  const cellCountUserCode = widthUserCode
+  
 
   // ---> GameBoard Grid
   const rowsGameBoard = []
@@ -74,12 +70,10 @@ function init() {
   const resultsAll = [resultOne, resultTwo, resultThree, resultFour, resultFive, resultSix, resultSeven, resultEight, resultNine, resultTen]
 
  
-
-
   //? EXECUTION 
   
   // ---> creates ALL GRIDS
-  function createCodeSelectorGrid(startingPosition) {
+  function createGameBoard(startingPosition) {
     // --->  creates codeSelector grid
     for (let i = 0; i < cellCountCodeSelector; i++) {
       const codeSelectorTotalWidth = widthCodeSelector * 40 + 'px'
@@ -87,47 +81,60 @@ function init() {
       const cssVal = String(cssStyles.getPropertyValue('--code-selector-width')).trim()
       codeSelector.style.setProperty('--code-selector-width', codeSelectorTotalWidth)
       console.log(cssVal)
-      const cellUC = document.createElement('div')
-      cellUC.textContent = 'U' + i
-      codeSelector.appendChild(cellUC)
-      cellsCodeSelector.push(cellUC)
+      const cellCS = document.createElement('div')
+      cellCS.textContent = 'CS' + i
+      codeSelector.appendChild(cellCS)
+      cellsCodeSelector.push(cellCS)
       cellsCodeSelector[startingPosition].classList.add('code-part-selected')
     }
-    // ---> create the Code
+    // ---> creates the Code
     for (let a = 0; a < cellCountCode; a++) {
       const cellC = document.createElement('div')
       cellC.textContent = 'C' + a
       theCode.appendChild(cellC)
-      cellsCode.push(cellC)
+      cellsRandomCode.push(cellC)
+    }
+    // ---> creates the userCode grid
+    for (let b = 0; b < cellCountUserCode; b++) {
+      const userCodeTotalWidth = widthUserCode * 40 + 'px'
+      const cssStylesTwo = getComputedStyle(userCode)
+      const cssValTwo = String(cssStylesTwo.getPropertyValue('--user-code-width')).trim()
+      userCode.style.setProperty('--user-code-width', userCodeTotalWidth)
+      console.log(cssValTwo)
+      const cellUC = document.createElement('div')
+      cellUC.textContent = 'UC' + b
+      userCode.appendChild(cellUC)
+      cellsUserCode.push(cellUC)
+      cellsUserCode[startingPosition].classList.add('code-part-selected')
     }
     // ---> creates gameBoard grid: 10 rows
-    for (let b = 0; b < 10; b++) {
+    for (let c = 0; c < 10; c++) {
       const row = document.createElement('div')
       gameBoard.appendChild(row)
       rowsGameBoard.push(row)
       row.classList.add('row')
-      row.id = (`row${10 - b}`)
+      row.id = (`row${10 - c}`)
       // ---> creates cells in every row
-      for (let c = 0; c < cellCountGameBoard; c++) {
+      for (let d = 0; d < cellCountGameBoard; d++) {
         const cellGB = document.createElement('div')
-        cellGB.textContent = b + ' - G' + c
+        cellGB.textContent = c + ' - G' + d
         row.appendChild(cellGB)
-        rows[b].push(cellGB)
+        rows[c].push(cellGB)
         cellsGameBoard.push(cellGB)
-        cellGB.dataset.cellNum = c + 1
+        cellGB.dataset.cellNum = d + 1
         cellGB.classList.add('game-board-empty')
         // ---> selects the last cell of every row
         if (cellGB.dataset.cellNum === '5') {
-          cellGB.id = (`result${10 - b}`)
+          cellGB.id = (`result${10 - c}`)
           cellGB.classList.remove('game-board-empty')
           cellGB.classList.add('results')
           cellGB.textContent = ''
           // ---> creates Result cells
-          for (let d = 0; d < cellCountGameBoardResult; d++) {
+          for (let e = 0; e < cellCountGameBoardResult; e++) {
             const cellR = document.createElement('div')
-            cellR.textContent = d
+            cellR.textContent = e
             cellGB.appendChild(cellR)
-            resultsAll[b].push(cellR)
+            resultsAll[c].push(cellR)
             cellsResults.push(cellR)
             cellR.classList.add('results-empty')
           }
@@ -139,9 +146,9 @@ function init() {
     paintRandomCode()
   }
 
-  // ---> paints codeSelector with code 
+  // ---> paints codeSelector with codeParts
   function paintCodeSelectorGrid() {
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < cellsCodeSelector.length; i++) {
       cellsCodeSelector[i].classList.add(codeParts[i])
     }
   }
@@ -161,9 +168,9 @@ function init() {
   }
 
   function paintRandomCode() {
-    const randomC = randomCode.slice(0, cellsCode.length)
-    for (let i = 0; i < cellsCode.length; i++) {
-      cellsCode[i].classList.add(randomC[i])
+    const randomC = randomCode.slice(0, cellsRandomCode.length)
+    for (let i = 0; i < cellsRandomCode.length; i++) {
+      cellsRandomCode[i].classList.add(randomC[i])
     }
   }
 
@@ -304,7 +311,7 @@ function init() {
 
 
   // --->  Creates codeSelector and gameBoard grids
-  createCodeSelectorGrid(playerCodePosition)
+  createGameBoard(playerCodePosition)
 
 
 
