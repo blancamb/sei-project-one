@@ -72,14 +72,12 @@ function init() {
 
 
   //? EXECUTION 
-
+  const root = document.documentElement
   // ---> creates ALL GRIDS
   function createGameBoard(startingPositionCS, startingPositionUC) {
     // --->  creates codeSelector grid
     for (let i = 0; i < cellCountCodeSelector; i++) {
       const codeSelectorTotalWidth = widthCodeSelector * 40 + 'px'
-      const cssStyles = getComputedStyle(codeSelector)
-      const cssVal = String(cssStyles.getPropertyValue('--code-selector-width')).trim()
       codeSelector.style.setProperty('--code-selector-width', codeSelectorTotalWidth)
       const cellCS = document.createElement('div')
       cellCS.textContent = 'CS' + i
@@ -97,8 +95,6 @@ function init() {
     // ---> creates the userCode grid
     for (let b = 0; b < cellCountUserCode; b++) {
       const userCodeTotalWidth = widthUserCode * 40 + 'px'
-      const cssStylesTwo = getComputedStyle(userCode)
-      const cssValTwo = String(cssStylesTwo.getPropertyValue('--user-code-width')).trim()
       userCode.style.setProperty('--user-code-width', userCodeTotalWidth)
       const cellUC = document.createElement('div')
       cellUC.textContent = 'UC' + b
@@ -271,7 +267,6 @@ function init() {
     } else if (numberOfSubmits < 10) {
       messagesBoard.textContent = 'YOU WIN'
     }
-    console.log(numberOfSubmits)
 
   }
   // ---> resets the board
@@ -297,7 +292,7 @@ function init() {
         }
       }
     }
-
+    submitCodeBtn.disabled = false
   }
 
 
