@@ -192,20 +192,27 @@ function init() {
     } else if (event.keyCode === 13) {
       cellsCodeSelector[codeSelectorPosition].classList.remove('code-part-selected')
       cellsUserCode[userCodePosition].classList = ''
-      cellsUserCode[userCodePosition].classList.add('user-code-selected')
       cellsUserCode[userCodePosition].classList.add(cellsCodeSelector[codeSelectorPosition].className)
+      if (userCodePosition < widthUserCode - 1) {
+        userCodePosition++
+      } else {
+        userCodePosition = 0
+      }
+      cellsUserCode[userCodePosition].classList.add('user-code-selected')
       cellsCodeSelector[codeSelectorPosition].classList.add('code-part-selected')
+      console.log(userCodePosition)
     }
+    
     // ---> userCode key events
     const xx = userCodePosition % widthUserCode
-    if (event.keyCode === 189) {
+    if (event.keyCode === 88) {
       if (xx < widthUserCode - 1) {
         cellsUserCode[userCodePosition].classList.remove('user-code-selected')
         userCodePosition++
         cellsUserCode[userCodePosition].classList.add('user-code-selected')
       }
     
-    } else if (event.keyCode === 190) {
+    } else if (event.keyCode === 90) {
       if (xx > 0) {
         cellsUserCode[userCodePosition].classList.remove('user-code-selected')
         userCodePosition--
@@ -213,6 +220,7 @@ function init() {
       }
     }
   }
+  console.log(userCodePosition)
 
   function handleSubmitCode() {
     cellsUserCode[userCodePosition].classList.remove('user-code-selected')
