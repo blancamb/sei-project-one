@@ -324,6 +324,13 @@ function init() {
     widthCodeSelector = parseFloat(event.target.value)
     resetAllVars()
     createGameBoard(codeSelectorPosition, userCodePosition)
+    optionsLengthBtns.forEach(button => {
+      if (widthCode > button.value) {
+        button.disabled = true
+      } else {
+        button.disabled = false
+      }
+    })
   }
 
 
