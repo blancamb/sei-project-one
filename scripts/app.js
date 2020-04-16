@@ -14,10 +14,20 @@ function init() {
   const optionsLengthBtns = document.querySelectorAll('.options-length-btn')
 
   //* Code Vars
-  let arrayOfCodeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d', 'code-part-e', 'code-part-f', 'code-part-g', 'code-part-h']
+  let arrayOfCodeParts = ['code-part-a', 'code-part-b', 'code-part-c', 'code-part-d', 'code-part-e', 'code-part-f', 'code-part-g', 'code-part-h', 'code-part-i', 'code-part-j', 'code-part-k', 'code-part-l']
   let randomCode = arrayOfCodeParts // ---> array of classes of Random code
   let codeAnswer = []
   let randomC = []
+
+
+  // let arrayOfCodePartsSix = arrayOfCodeParts
+  // let arrayOfCodePartsEight = arrayOfCodeParts
+  // let arrayOfCodePartsTen = arrayOfCodeParts
+  // let arrayOfCodePartsTwelve = arrayOfCodeParts
+  // arrayOfCodePartsSix.length = 6
+  // arrayOfCodePartsEight.length = 8
+  // arrayOfCodePartsTen.length = 10
+  // arrayOfCodePartsTwelve.length = 12
 
   //* Game Vars
   let codeSelectorPosition = 0
@@ -27,7 +37,7 @@ function init() {
   //* Grid Vars
   // ---> codeSelector Grid
   let cellsCodeSelector = []
-  let widthCodeSelector = arrayOfCodeParts.length
+  let widthCodeSelector = 6
   let cellCountCodeSelector = widthCodeSelector
   // ---> randomCode Grid
   let cellsRandomCode = []
@@ -78,10 +88,9 @@ function init() {
   function createGameBoard(startingPositionCS, startingPositionUC) {
     // --->  creates codeSelector grid
     for (let i = 0; i < cellCountCodeSelector; i++) {
-      const codeSelectorTotalWidth = widthCodeSelector * 40 + 'px'
+      const codeSelectorTotalWidth = widthCodeSelector * 50 + 'px'
       codeSelector.style.setProperty('--code-selector-width', codeSelectorTotalWidth)
       const cellCS = document.createElement('div')
-      cellCS.textContent = 'CS' + i
       codeSelector.appendChild(cellCS)
       cellsCodeSelector.push(cellCS)
       cellsCodeSelector[startingPositionCS].classList.add('code-part-selected')
@@ -91,7 +100,6 @@ function init() {
     theCode.style.setProperty('--the-code-width', theCodeTotalWidth)
     for (let a = 0; a < cellCountCode; a++) {
       const cellC = document.createElement('div')
-      cellC.textContent = 'C' + a
       theCode.appendChild(cellC)
       cellsRandomCode.push(cellC)
     }
@@ -100,7 +108,6 @@ function init() {
       const userCodeTotalWidth = widthUserCode * 40 + 'px'
       userCode.style.setProperty('--user-code-width', userCodeTotalWidth)
       const cellUC = document.createElement('div')
-      cellUC.textContent = 'UC' + b
       userCode.appendChild(cellUC)
       cellsUserCode.push(cellUC)
       cellsUserCode[startingPositionUC].classList.add('user-code-selected')
@@ -117,7 +124,6 @@ function init() {
       // ---> creates cells in every row
       for (let d = 0; d < cellCountGameBoard; d++) {
         const cellGB = document.createElement('div')
-        cellGB.textContent = c + ' - G' + d
         row.appendChild(cellGB)
         rows[c].push(cellGB)
         cellsGameBoard.push(cellGB)
@@ -128,13 +134,11 @@ function init() {
           cellGB.id = (`result${10 - c}`)
           cellGB.classList.remove('game-board-empty')
           cellGB.classList.add('results')
-          cellGB.textContent = ''
           const resultCellsWidth = 100 / (widthCode / 2) + '%'
           cellGB.style.setProperty('--result-cells-width', resultCellsWidth)
           // ---> creates Result cells
           for (let e = 0; e < cellCountGameBoardResult; e++) {
             const cellR = document.createElement('div')
-            cellR.textContent = e
             cellGB.appendChild(cellR)
             resultsAll[c].push(cellR)
             cellsResults.push(cellR)
@@ -143,18 +147,13 @@ function init() {
         }
       }
     }
-    paintCodeSelectorGrid()
+
     handleRandomCode(arrayOfCodeParts)
+    paintCodeSelectorGrid()
     paintRandomCode()
   }
 
-  // ---> paints codeSelector with codeParts
-  function paintCodeSelectorGrid() {
-    for (let i = 0; i < cellsCodeSelector.length; i++) {
-      cellsCodeSelector[i].classList.add(arrayOfCodeParts[i])
-    }
-  }
-
+  
   // ---> generates a random code 
   function handleRandomCode(array) {
     let currentIndex = array.length
@@ -169,13 +168,26 @@ function init() {
     }
   }
 
-  function paintRandomCode() {
-    randomC = randomCode.slice(0, cellsRandomCode.length)
-    for (let i = 0; i < cellsRandomCode.length; i++) {
-      cellsRandomCode[i].classList.add(randomC[i])
+  // ---> paints codeSelector with codeParts
+  function paintCodeSelectorGrid() {
+    randomC = randomCode.slice(0, cellsCodeSelector.length)
+    for (let i = 0; i < cellsCodeSelector.length; i++) {
+      cellsCodeSelector[i].classList.add(randomC[i])
     }
+    return randomC
   }
 
+  function paintRandomCode() {
+    handleRandomCode(randomC)
+    randomS = randomC.slice(0, cellsRandomCode.length)
+    for (let i = 0; i < cellsRandomCode.length; i++) {
+      cellsRandomCode[i].classList.add(randomS[i])
+    }
+    console.log(arrayOfCodeParts)
+    console.log(randomCode)
+    console.log(randomC)
+  }
+ 
   // ---> codeSelector key events
   function handleKeyUp(event) {
     const x = codeSelectorPosition % widthCodeSelector
@@ -336,9 +348,9 @@ function init() {
   }
 
 
-  // ! function handleSelectOptionsLength(event) {
-  // !  console.log('clicked button ' + event.target.value)
-  // !}
+  //  function handleSelectOptionsLength(event) {
+  //  widthCodeSelector
+  // }
 
 
 
