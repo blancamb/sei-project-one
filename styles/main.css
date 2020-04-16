@@ -18,11 +18,28 @@ body {
   font-size: 10px;
   height: 650px;
   text-align: center;
+  font-family: 'Amatic SC';
+  background-color: rgba(70, 177, 187, 0.411);
+}
+
+h1 {
+  font-size: 54px;
+  margin: 0 0 -10px 0;
+}
+
+h2 {
+  font-size: 30px;
+  margin: 5px 0 10px 0;
+}
+
+p {
+  font-size: 15px;
 }
 
 .main {
   display: flex;
   width: 900px;
+  border: 20px solid rgb(92, 199, 149);
 }
 
 .central-column {
@@ -31,7 +48,8 @@ body {
   align-items: center;
   justify-content: space-around;
   width: 50%;
-  background-color: rgb(170, 188, 238);
+  background-color: rgba(195, 104, 131, 0.726);
+  padding: 20px
 }
 
 .right-column {
@@ -40,12 +58,7 @@ body {
   justify-content: space-around;
   align-items: center;
   width: 50%;
-  background-color: rgb(238, 170, 238);
-}
-
-h1 {
-  font-size: 34px;
-  margin-bottom: 20px;
+  background-color: rgba(19, 50, 68, 0.411);
 }
 
 /* user-code, game-board and result-box grids */
@@ -57,13 +70,13 @@ h1 {
 
 .user-code {
   align-items: center;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
   display: flex;
   height: 100%;
   justify-content: center;
-  height: 40px;
+  height: 50px;
   width: var(--user-code-width);
   flex-wrap: wrap;
+  margin: 40px 0 0 0;
 }
 
 .user-code div {
@@ -74,6 +87,9 @@ h1 {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(10, 9, 9, 0.733);
+
 }
 
 .code-selector {
@@ -83,6 +99,7 @@ h1 {
   justify-content: center;
   height: 40px;
   width: var(--code-selector-width);
+  margin-bottom: 20px;
 }
 
 .code-selector div {
@@ -93,6 +110,7 @@ h1 {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
 }
 
 .the-code {
@@ -105,7 +123,7 @@ h1 {
   height: 40px;
   width: var(--the-code-width);
   margin-bottom: 20px;
-  /* display: none; */
+  display: none;
 }
 
 .the-code div {
@@ -122,13 +140,18 @@ h1 {
   justify-content: center;
   height: 40px;
   width: var(--game-board-width);
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 30px;
 }
 
 .row div {
-  border: 1px solid lightgrey;
   flex-grow: 1;
   height: 100%;
   width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  /* border: 1px solid rgba(0, 0, 0, 0.445); */
+
 }
 
 .results {
@@ -143,16 +166,23 @@ h1 {
 .results div {
   width: var(--result-cells-width);
   height: 50%;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.message-board {
+  font-size: 15px;
+  width: 70%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* code parts */
 
 .code-part-selected {
-  border: 5px solid rgb(44, 89, 187);
-}
-
-.user-code-selected {
-  border: 5px solid rgb(187, 44, 44);
+  border: 5px solid rgb(0, 0, 0);
 }
 
 .a {
@@ -178,7 +208,7 @@ h1 {
 
 .e {
   background: url('../assets/images/e.png');
-  background-color: rebeccapurple;
+  background-color: rgb(106, 145, 177);
 }
 
 .f {
@@ -188,32 +218,32 @@ h1 {
 
 .g {
   background: url('../assets/images/g.png');
-  background-color: rgb(54, 50, 43);
+  background-color: rgb(71, 145, 56);
 }
 
 .h {
   background: url('../assets/images/h.png');
-  background-color: rgb(0, 255, 242);
+  background-color: rgb(6, 190, 181);
 }
 
 .i {
   background: url('../assets/images/i.png');
-  background-color: rgb(0, 255, 242);
+  background-color: rgb(182, 70, 70);
 }
 
 .j {
   background: url('../assets/images/j.png');
-  background-color: rgb(0, 255, 242);
+  background-color: rgb(106, 134, 195);
 }
 
 .k {
   background: url('../assets/images/k.png');
-  background-color: rgb(0, 255, 242);
+  background-color: rgb(176, 218, 98);
 }
 
 .l {
   background: url('../assets/images/l.png');
-  background-color: rgb(0, 255, 242);
+  background-color: rgb(187, 103, 212);
 }
 
 .a, .b, .c, .d, .e, .f, .g, .h, .i, .j, .k, .l {
@@ -223,24 +253,24 @@ h1 {
 }
 
 .game-board-empty {
-  background-color: sandybrown;
+  background-color: rgba(0, 0, 0, 0.74);
 }
 
 .results-empty {
-  background-color: greenyellow;
+  background-color: rgba(1, 14, 24, 0.52);
 }
 
 .user-code-empty {
-  background-color: slategrey;
+  background-color: rgba(195, 104, 131, 0.726);
 }
 
 .code-right {
   background-color: black;
 }
 
-.code-near {
+/* .code-near {
   background-color: seagreen;
-}
+} */
 
 .code-wrong {
   background-color: fuchsia;
@@ -249,8 +279,15 @@ h1 {
 /* Buttons */
 
 .submit-code {
-  margin-bottom: 20px;
+  margin: 20px;
   padding: 10px 30px;
+  border-radius: 10px;
+}
+
+.reset {
+  padding: 10px 10px;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 .select-length {
@@ -265,6 +302,7 @@ h1 {
   flex-direction: column;
   align-items: center;
   width: 40%;
+  margin-top: 20px;
 }
 
 .length-btns {
@@ -277,16 +315,4 @@ h1 {
   margin: 0 5px;
   border-radius: 10px;
   border: 3px solid black;
-}
-
-/* message board */
-
-.message-board {
-  font-size: 15px;
-  width: 90%;
-  height: 150px;
-  background-color: springgreen;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
