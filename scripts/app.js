@@ -279,7 +279,7 @@ function init() {
 
   function handleResetWinLose () {
     main.removeChild(main.lastChild)
-    handleResetGame()
+    handleReset()
   }
 
   // ---> RESET
