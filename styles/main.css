@@ -33,13 +33,17 @@ h2 {
 }
 
 p {
-  font-size: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .main {
   display: flex;
   width: 900px;
+  height: 550px;
   border: 20px solid rgb(92, 199, 149);
+  border-radius: 10px;
 }
 
 .central-column {
@@ -59,6 +63,7 @@ p {
   align-items: center;
   width: 50%;
   background-color: rgba(19, 50, 68, 0.411);
+
 }
 
 /* user-code, game-board and result-box grids */
@@ -66,6 +71,7 @@ p {
 .game-board {
   display: flex;
   flex-direction: column-reverse;
+  padding: 10px;
 }
 
 .user-code {
@@ -76,7 +82,7 @@ p {
   height: 50px;
   width: var(--user-code-width);
   flex-wrap: wrap;
-  margin: 40px 0 0 0;
+  margin: 40px 0 10px 0;
 }
 
 .user-code div {
@@ -99,7 +105,7 @@ p {
   justify-content: center;
   height: 40px;
   width: var(--code-selector-width);
-  margin-bottom: 20px;
+  margin: 10px 0 20px;
 }
 
 .code-selector div {
@@ -140,8 +146,7 @@ p {
   justify-content: center;
   height: 40px;
   width: var(--game-board-width);
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 30px;
+  
 }
 
 .row div {
@@ -149,9 +154,8 @@ p {
   height: 100%;
   width: 100%;
   border-radius: 10px;
+  border: 1px solid black;;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
-  /* border: 1px solid rgba(0, 0, 0, 0.445); */
-
 }
 
 .results {
@@ -168,10 +172,12 @@ p {
   height: 50%;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
   border-radius: 10px;
+  border: none;
 }
 
 .message-board {
-  font-size: 15px;
+  font-size: 20px;
+  font-weight: bold;
   width: 70%;
   height: 100px;
   display: flex;
@@ -180,10 +186,6 @@ p {
 }
 
 /* code parts */
-
-.code-part-selected {
-  border: 5px solid rgb(0, 0, 0);
-}
 
 .a {
   background: url('../assets/images/a.png');
@@ -250,14 +252,19 @@ p {
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100%;
+  border: 1px solid black;
+}
+
+.code-part-selected {
+  border: 5px solid rgb(0, 0, 0);
 }
 
 .game-board-empty {
-  background-color: rgba(0, 0, 0, 0.74);
+  background-color: rgba(66, 108, 124, 0.74);
 }
 
 .results-empty {
-  background-color: rgba(1, 14, 24, 0.52);
+  background-color: rgba(99, 65, 91, 0.52);
 }
 
 .user-code-empty {
@@ -268,26 +275,34 @@ p {
   background-color: black;
 }
 
-/* .code-near {
-  background-color: seagreen;
-} */
-
-.code-wrong {
-  background-color: fuchsia;
+.code-near {
+  background-color: rgb(226, 235, 230);
 }
+
 
 /* Buttons */
 
 .submit-code {
-  margin: 20px;
-  padding: 10px 30px;
+margin: 0 0 20px 0;
+  padding: 10px 20px;
   border-radius: 10px;
+  font-family: Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  background-color: rgb(92, 199, 149);
+  border: 1px solid black;
+
 }
 
 .reset {
   padding: 10px 10px;
   border-radius: 10px;
   margin-bottom: 20px;
+  font-family: Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: rgba(184, 5, 5, 0.616);
+  border: 1px solid black;
 }
 
 .select-length {
@@ -302,7 +317,7 @@ p {
   flex-direction: column;
   align-items: center;
   width: 40%;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .length-btns {
@@ -315,4 +330,8 @@ p {
   margin: 0 5px;
   border-radius: 10px;
   border: 3px solid black;
+  background-color: rgb(255, 255, 255);
+  font-family: Helvetica, sans-serif;
+font-size: 15px;
 }
+

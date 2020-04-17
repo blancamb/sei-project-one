@@ -177,6 +177,66 @@ function init() {
     }
   }
 
+  function handleSubmitCode() {
+    codeAnswer = []
+    const nextRow = rows[numberOfSubmits]
+    const submittedCode = [] // ---> array of classes of Submitted code
+    const submittedCodeSorted = submittedCode
+    cellsUserCode.forEach(cell => {
+      submittedCode.push(cell.className)
+    })
+    // ---> checks for the code to have all different parts and no repeats
+    submittedCodeSorted.slice().sort()
+    for (let i = 0; i < submittedCode.length; i++) {
+      if (submittedCodeSorted[i] === submittedCodeSorted[i + 1]) {
+        messagesBoard.textContent = 'Duplicates are not allowed!'
+        return
+      }
+      // ---> transfers PlayerCode to GameGrid
+      nextRow[i].classList = (submittedCode[i])
+    }
+    // --->  compares Player's and Random code and gives an array codeAnswer
+    for (let i = 0; i < submittedCode.length; i++) {
+      if (randomS.includes(submittedCode[i])) {
+        if (submittedCode[i] === randomS[i]) {
+          codeAnswer.push('code-right')
+        } else if (submittedCode[i] !== randomS[i]) {
+          codeAnswer.push('code-near')
+        }
+      }
+      for (let i = 0; i < cellsUserCode.length; i++) {
+        cellsUserCode[i].classList = ('user-code-empty')
+      }
+      console.log(cellsUserCode)
+      cellsCodeSelector[codeSelectorPosition].classList.remove('code-part-selected')
+      codeSelectorPosition = 0
+      cellsCodeSelector[codeSelectorPosition].classList.add('code-part-selected')
+    }
+    handleRandomCode(codeAnswer) // ---> converts the answer array to random
+    // ---> transfers randomAnswer to Results grid
+    const nextResult = resultsAll[numberOfSubmits]
+    for (let i = 0; i < codeAnswer.length; i++) {
+      nextResult[i].classList.add(codeAnswer[i])
+    }
+    numberOfSubmits++
+    codeSelectorPosition = 0
+    // ---> WIN & GAME OVER logic
+    if (numberOfSubmits < 10 && (codeAnswer.includes('code-wrong') || codeAnswer.includes('code-near'))) {
+      messagesBoard.textContent = 'try again!'
+    } else if (numberOfSubmits === 10 && (codeAnswer.includes('code-wrong') || codeAnswer.includes('code-near'))) {
+      messagesBoard.textContent = 'GAME OVER'
+      window.alert('GAME OVER!')
+      resetAllVars()
+      submitCodeBtn.disabled = false
+      createGameBoard(codeSelectorPosition, userCodePosition)
+
+    } else if (numberOfSubmits < 10) {
+      messagesBoard.textContent = 'YOU WIN'
+      window.alert(`Good job! You've freed ${widthCode} animals from the zoo!`)
+      handleReset()
+    }
+  }
+
   // ---> codeSelector key events
   function handleKeyUp(event) {
     const x = codeSelectorPosition % widthCodeSelector
@@ -193,10 +253,7 @@ function init() {
         codeSelectorPosition--
         cellsCodeSelector[codeSelectorPosition].classList.add('code-part-selected')
       }
-    } else if (event.keyCode === 13) {
-      handleSubmitCode()
     }
-
     const numberKeys = [49, 50, 51, 52, 53, 54, 55, 56]
     for (let i = 0; i < numberKeys.length; i++) {
       if (event.keyCode === numberKeys[i]) {
@@ -204,61 +261,8 @@ function init() {
         cellsUserCode[i].classList.remove('user-code-empty')
         cellsUserCode[i].classList.add(cellsCodeSelector[codeSelectorPosition].className)
         cellsCodeSelector[codeSelectorPosition].classList.add('code-part-selected')
+        console.log(cellsUserCode)
       }
-    }
-  }
-
-  function handleSubmitCode() {
-    codeAnswer = []
-    const nextRow = rows[numberOfSubmits]
-    const submittedCode = [] // ---> array of classes of Submitted code
-    const submittedCodeSorted = submittedCode
-    cellsUserCode.forEach(cell => {
-      submittedCode.push(cell.className)
-    })
-    // ---> checks for the code to have all different parts and no repeats
-    submittedCodeSorted.slice().sort()
-    for (let i = 0; i < submittedCode.length; i++) {
-      if (submittedCodeSorted[i] === submittedCodeSorted[i + 1]) {
-        console.log('duplicates!')
-        return
-      }
-      // ---> transfers PlayerCode to GameGrid
-      nextRow[i].classList = (submittedCode[i])
-    }
-    // --->  compares Player's and Random code and gives an array codeAnswer
-    for (let i = 0; i < submittedCode.length; i++) {
-      if (randomC.includes(submittedCode[i])) {
-        if (submittedCode[i] === randomC[i]) {
-          codeAnswer.push('code-right')
-        } else if (submittedCode[i] !== randomC[i]) {
-          codeAnswer.push('code-near')
-        }
-      } 
-
-    }
-    handleRandomCode(codeAnswer) // ---> converts the answer array to random
-    // ---> transfers randomAnswer to Results grid
-    const nextResult = resultsAll[numberOfSubmits]
-    for (let i = 0; i < codeAnswer.length; i++) {
-      nextResult[i].classList.add(codeAnswer[i])
-    }
-    numberOfSubmits++
-    codeSelectorPosition = 0
-    // ---> WIN & GAME OVER logic
-    if (numberOfSubmits < 10 && (codeAnswer.includes('code-wrong') || codeAnswer.includes('code-near'))) {
-      messagesBoard.textContent = 'try again!'
-    } else if (rowTen[0].classList != ('game-board-empty') && (codeAnswer.includes('code-wrong') || codeAnswer.includes('code-near'))) {
-      messagesBoard.textContent = 'GAME OVER'
-      window.alert('GAME OVER!')
-      resetAllVars()
-      submitCodeBtn.disabled = false
-      createGameBoard(codeSelectorPosition, userCodePosition)
-      
-    } else if (numberOfSubmits < 10) {
-      messagesBoard.textContent = 'YOU WIN'
-      window.alert(`Good job! You've freed ${widthCode} animals from the zoo!`)
-      handleReset()
     }
   }
 
@@ -270,6 +274,7 @@ function init() {
     randomCode = arrayOfCodeParts
     randomC = []
     randomS = []
+    codeAnswer = []
     codeSelectorPosition = 0
     userCodePosition = 0
     numberOfSubmits = 0
@@ -296,7 +301,7 @@ function init() {
       resultsAll[i] = []
     }
   }
-  
+
   function handleResetGame() {
     const resetOk = window.confirm('Press OK to start a new game')
     if (resetOk === true) {
@@ -316,6 +321,9 @@ function init() {
         button.disabled = false
       }
     })
+    console.log(widthCode)
+    console.log(codeAnswer)
+    console.log(cellsUserCode)
   }
 
 
@@ -341,7 +349,6 @@ function init() {
 
   document.addEventListener('keyup', handleKeyUp)
   submitCodeBtn.addEventListener('click', handleSubmitCode)
-  submitCodeBtn.addEventListener('keyup', handleSubmitCode)
   resetBtn.addEventListener('click', handleResetGame)
   codeLengthBtns.forEach(button => button.addEventListener('click', handleSelectCodeLength))
   optionsLengthBtns.forEach(button => button.addEventListener('click', handleSelectOptionsLength))
