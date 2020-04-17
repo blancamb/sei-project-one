@@ -277,9 +277,13 @@ function init() {
     }
   }
 
+  function handleResetWinLose () {
+    main.removeChild(main.lastChild)
+    handleResetGame()
+  }
+
   // ---> RESET
   function resetAllVars() {
-    main.removeChild(main.lastChild)
     codeSelector.innerHTML = ''
     theCode.innerHTML = ''
     userCode.innerHTML = ''
@@ -365,8 +369,8 @@ function init() {
   resetBtn.addEventListener('click', handleResetGame)
   codeLengthBtns.forEach(button => button.addEventListener('click', handleSelectCodeLength))
   optionsLengthBtns.forEach(button => button.addEventListener('click', handleSelectOptionsLength))
-  resetBtnWin.addEventListener('click', handleResetGame)
-  resetBtnGameOver.addEventListener('click', handleResetGame)
+  resetBtnWin.addEventListener('click', handleResetWinLose)
+  resetBtnGameOver.addEventListener('click', handleResetWinLose)
 
 }
 window.addEventListener('DOMContentLoaded', init)
