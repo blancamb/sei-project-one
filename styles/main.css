@@ -18,7 +18,7 @@ body {
   font-size: 10px;
   height: 650px;
   text-align: center;
-  font-family: 'Amatic SC';
+  font-family: 'Amatic SC', Arial, Helvetica, sans-serif;
   background-color: rgba(70, 177, 187, 0.411);
 }
 
@@ -53,7 +53,7 @@ p {
   justify-content: space-around;
   width: 50%;
   background-color: rgba(195, 104, 131, 0.726);
-  padding: 20px
+  padding: 20px z-index: 1;
 }
 
 .right-column {
@@ -63,7 +63,7 @@ p {
   align-items: center;
   width: 50%;
   background-color: rgba(19, 50, 68, 0.411);
-
+  z-index: 1;
 }
 
 /* user-code, game-board and result-box grids */
@@ -95,7 +95,6 @@ p {
   border-radius: 10px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(10, 9, 9, 0.733);
-
 }
 
 .code-selector {
@@ -146,7 +145,6 @@ p {
   justify-content: center;
   height: 40px;
   width: var(--game-board-width);
-  
 }
 
 .row div {
@@ -154,7 +152,8 @@ p {
   height: 100%;
   width: 100%;
   border-radius: 10px;
-  border: 1px solid black;;
+  border: 1px solid black;
+  ;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -260,7 +259,10 @@ p {
 }
 
 .game-board-empty {
-  background-color: rgba(66, 108, 124, 0.74);
+  /* background-color: rgba(66, 108, 124, 0.74); */
+  background-image: url(../assets/images/qmark.png);
+  background-position: center;
+  background-size: cover;
 }
 
 .results-empty {
@@ -279,11 +281,10 @@ p {
   background-color: rgb(226, 235, 230);
 }
 
-
 /* Buttons */
 
 .submit-code {
-margin: 0 0 20px 0;
+  margin: 0 0 20px 0;
   padding: 10px 20px;
   border-radius: 10px;
   font-family: Helvetica, sans-serif;
@@ -291,7 +292,6 @@ margin: 0 0 20px 0;
   font-weight: bold;
   background-color: rgb(92, 199, 149);
   border: 1px solid black;
-
 }
 
 .reset {
@@ -332,6 +332,50 @@ margin: 0 0 20px 0;
   border: 3px solid black;
   background-color: rgb(255, 255, 255);
   font-family: Helvetica, sans-serif;
-font-size: 15px;
+  font-size: 15px;
 }
 
+/* Win & GameOver pop-ups */
+.win-window {
+  background-color: white;
+  width: 900px;
+  height: 550px;
+  position: absolute;
+  position: fixed;
+  left: 70px;
+  top: 110px;
+  z-index: 99;
+  border: 20px solid rgb(92, 199, 149);
+  background-color: rgb(195, 104, 131);
+  background-image: url(../assets/images/monkey.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right;
+  font-size: 40px;
+  font-weight: bold;
+  text-shadow: 0px 0px 4px rgb(169, 220, 224);
+  padding: 30px;
+  text-align: left;
+}
+
+.game-over-window {
+  background-color: white;
+  width: 900px;
+  height: 550px;
+  position: absolute;
+  position: fixed;
+  left: 70px;
+  top: 110px;
+  z-index: 99;
+  border: 20px solid rgb(92, 199, 149);
+  background-color: rgb(195, 104, 131);
+  background-image: url(../assets/images/cat.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right;
+  font-size: 40px;
+  font-weight: bold;
+  text-shadow: 0px 0px 4px rgb(169, 220, 224);
+  text-align: left;
+padding: 30px;
+}

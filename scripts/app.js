@@ -12,10 +12,14 @@ function init() {
   const resetBtn = document.querySelector('.reset')
   const codeLengthBtns = document.querySelectorAll('.code-length-btn')
   const optionsLengthBtns = document.querySelectorAll('.options-length-btn')
+  const winWindow = document.createElement('div')
+  const gameOverWindow = document.createElement('div')
+  const main = document.querySelector('.main')
+  const resetBtnGameOver = document.createElement('button')
+  const resetBtnWin = document.createElement('button')
 
   //* Code Vars
   const arrayOfCodeParts = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l']
-
   let randomCode = arrayOfCodeParts // ---> array of classes of Random code
   let codeAnswer = []
   let randomC = []
@@ -41,7 +45,6 @@ function init() {
   let widthUserCode = widthCode
   let cellCountUserCode = widthUserCode
 
-
   // ---> GameBoard Grid
   let rowsGameBoard = []
   let cellsGameBoard = []
@@ -50,6 +53,7 @@ function init() {
   let cellCountGameBoard = widthGameBoard
   let widthGameBoardResult = 2
   let cellCountGameBoardResult = widthGameBoardResult * 2
+
   //---> gameBoard rows
   const rowOne = []
   const rowTwo = []
@@ -62,6 +66,7 @@ function init() {
   const rowNine = []
   const rowTen = []
   let rows = [rowOne, rowTwo, rowThree, rowFour, rowFive, rowSix, rowSeven, rowEight, rowNine, rowTen]
+
   // ---> results cells
   const resultOne = []
   const resultTwo = []
@@ -78,7 +83,7 @@ function init() {
 
   //? EXECUTION 
   // ---> creates ALL GRIDS
-  function createGameBoard(startingPositionCS, startingPositionUC) {
+  function createGameBoard(startingPositionCS) {
     // --->  creates codeSelector grid
     const codeSelectorTotalWidth = widthCodeSelector * 40 + 'px'
     codeSelector.style.setProperty('--code-selector-width', codeSelectorTotalWidth)
@@ -168,7 +173,7 @@ function init() {
       cellsCodeSelector[i].classList.add(randomC[i])
     }
   }
-
+  // ---> paints the code with a random code
   function paintRandomCode() {
     handleRandomCode(randomC)
     randomS = randomC.slice(0, cellsRandomCode.length)
@@ -176,8 +181,8 @@ function init() {
       cellsRandomCode[i].classList.add(randomS[i])
     }
   }
-
-  function handleSubmitCode() {
+  // ---> SUBMIT CODE
+  function handleSubmitCode(event) {
     codeAnswer = []
     const nextRow = rows[numberOfSubmits]
     const submittedCode = [] // ---> array of classes of Submitted code
@@ -225,17 +230,23 @@ function init() {
       messagesBoard.textContent = 'try again!'
     } else if (numberOfSubmits === 10 && (codeAnswer.includes('code-wrong') || codeAnswer.includes('code-near'))) {
       messagesBoard.textContent = 'GAME OVER'
-      window.alert('GAME OVER!')
-      resetAllVars()
-      submitCodeBtn.disabled = false
-      createGameBoard(codeSelectorPosition, userCodePosition)
-
+      gameOverWindow.classList.add('game-over-window')
+      main.appendChild(gameOverWindow)
+      gameOverWindow.innerHTML = 'Nope...<br >you haven\'t found the right code!<br 7>'
+      resetBtnGameOver.classList.add('reset')
+      resetBtnGameOver.textContent = 'PLAY AGAIN!'
+      gameOverWindow.appendChild(resetBtnGameOver)
     } else if (numberOfSubmits < 10) {
       messagesBoard.textContent = 'YOU WIN'
-      window.alert(`Good job! You've freed ${widthCode} animals from the zoo!`)
-      handleReset()
+      winWindow.classList.add('win-window')
+      main.appendChild(winWindow)
+      winWindow.innerHTML = `Good job! <br /> You've freed ${widthCode} animals from the zoo! <br />`
+      resetBtnWin.classList.add('reset')
+      resetBtnWin.textContent = 'PLAY AGAIN!'
+      winWindow.appendChild(resetBtnWin)
     }
   }
+
 
   // ---> codeSelector key events
   function handleKeyUp(event) {
@@ -258,7 +269,7 @@ function init() {
     for (let i = 0; i < numberKeys.length; i++) {
       if (event.keyCode === numberKeys[i]) {
         cellsCodeSelector[codeSelectorPosition].classList.remove('code-part-selected')
-        cellsUserCode[i].classList.remove('user-code-empty')
+        cellsUserCode[i].classList = ''
         cellsUserCode[i].classList.add(cellsCodeSelector[codeSelectorPosition].className)
         cellsCodeSelector[codeSelectorPosition].classList.add('code-part-selected')
         console.log(cellsUserCode)
@@ -266,7 +277,9 @@ function init() {
     }
   }
 
+  // ---> RESET
   function resetAllVars() {
+    main.removeChild(main.lastChild)
     codeSelector.innerHTML = ''
     theCode.innerHTML = ''
     userCode.innerHTML = ''
@@ -309,6 +322,7 @@ function init() {
     }
   }
 
+  // ---> CODE LENGTH SELECTOR
   function handleSelectCodeLength(event) {
     widthCode = parseFloat(event.target.value)
     widthCodeSelector = parseFloat(event.target.value)
@@ -326,7 +340,7 @@ function init() {
     console.log(cellsUserCode)
   }
 
-
+  // ---> SELECTOR LENGTH SELECTOR
   function handleSelectOptionsLength(event) {
     widthCodeSelector = parseFloat(event.target.value)
     resetAllVars()
@@ -339,11 +353,10 @@ function init() {
     createGameBoard(codeSelectorPosition, userCodePosition)
   }
 
+
+
   // --->  Creates codeSelector and gameBoard grids
-  createGameBoard(codeSelectorPosition, userCodePosition)
-
-
-
+  createGameBoard(0)
 
   //? EVENTS
 
@@ -352,7 +365,8 @@ function init() {
   resetBtn.addEventListener('click', handleResetGame)
   codeLengthBtns.forEach(button => button.addEventListener('click', handleSelectCodeLength))
   optionsLengthBtns.forEach(button => button.addEventListener('click', handleSelectOptionsLength))
-
+  resetBtnWin.addEventListener('click', handleResetGame)
+  resetBtnGameOver.addEventListener('click', handleResetGame)
 
 }
 window.addEventListener('DOMContentLoaded', init)
